@@ -1,0 +1,133 @@
+<div class="contenedor">
+  <div class="encabezado">
+    <h2>Listado de Productos</h2>
+    <div class="acciones-encabezado">
+      <button class="btn btn-primario" (click)="abrirModal()">
+        + Agregar Producto
+      </button>
+    </div>
+  </div>
+
+  <!-- Buscador por nombre -->
+  <div class="barra-busqueda">
+    <div class="campo-busqueda">
+      <input type="text" placeholder="Buscar por nombre (ej: Teclado)..." [(ngModel)]="terminoBusqueda"
+        (keyup.enter)="buscarPorNombre()" />
+      @if (terminoBusqueda) {
+      <button class="btn-limpiar" (click)="limpiarBusqueda()" title="Limpiar búsqueda">✕</button>
+      }
+    </div>
+    <button class="btn btn-buscar" (click)="buscarPorNombre()">
+      Buscar
+    </button>
+  </div>
+
+  @if (errorMensaje()) {
+  <div class="alerta alerta-error">
+    {{ errorMensaje() }}
+  </div>
+  }
+
+  <div class="tabla-responsive">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Estado</th>
+          <th class="centrado">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (cargando()) {
+        <tr>
+          <td colspan="6" class="mensaje-tabla">Cargando productos desde el backend...</td>
+        </tr>
+        } @else {
+        @for (prod of productos(); track prod.id_producto) {
+        <tr>
+          <td>#{{ prod.id_producto }}</td>
+          <td><strong>{{ prod.nombre_producto }}</strong></td>
+          <td>{{ prod.precio | currency:'USD' }}</td>
+          <td>{{ prod.stock }}</td>
+          <td>
+            <span class="badge" [class.activo]="prod.estado_producto" [class.inactivo]="!prod.estado_producto">
+              {{ prod.estado_producto ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="centrado">
+            <div class="acciones-fila">
+              <button class="btn-sm btn-editar" (click)="abrirModalEditar(prod.id_producto!)" title="Editar producto">
+                Editar
+              </button>
+              <button class="btn-sm btn-danger" (click)="cambiarEstado(prod.id_producto!)"
+                title="Cambiar estado del producto">
+                Estado
+              </button>
+            </div>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="6" class="mensaje-tabla">No hay productos registrados en la base de datos.</td>
+        </tr>
+        }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal dinámico para Crear o Editar producto -->
+  @if (mostrarModal()) {
+  <div class="modal-fondo" (click)="cerrarModal()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-cabecera">
+        <h3>{{ esEdicion() ? 'Editar Producto' : 'Crear Nuevo Producto' }}</h3>
+        <button class="btn-cerrar" (click)="cerrarModal()">✕</button>
+      </div>
+
+      <form (ngSubmit)="guardar()" #formProducto="ngForm" class="modal-formulario">
+        <div class="campo">
+          <label for="nombre">Nombre del Producto *</label>
+          <input id="nombre" name="nombre_producto" type="text" [(ngModel)]="nuevoProducto.nombre_producto"
+            placeholder="Ej: Teclado Mecánico RGB" required />
+        </div>
+
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="precio">Precio ($) *</label>
+            <input id="precio" name="precio" type="number" step="0.01" min="0.01" [(ngModel)]="nuevoProducto.precio"
+              placeholder="0.00" required />
+          </div>
+
+          <div class="campo">
+            <label for="stock">Stock *</label>
+            <input id="stock" name="stock" type="number" min="0" [(ngModel)]="nuevoProducto.stock" placeholder="0"
+              required />
+          </div>
+        </div>
+
+        <!-- Selector de Estado (Activo / Inactivo) -->
+        <div class="campo">
+          <label for="estado">Estado del Producto</label>
+          <select id="estado" name="estado_producto" [(ngModel)]="nuevoProducto.estado_producto">
+            <option [ngValue]="true">Activo</option>
+            <option [ngValue]="false">Inactivo</option>
+          </select>
+        </div>
+
+        <div class="modal-pie">
+          <button type="button" class="btn btn-secundario" (click)="cerrarModal()" [disabled]="guardando()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primario" [disabled]="!formProducto.form.valid || guardando()">
+            {{ guardando() ? 'Guardando...' : (esEdicion() ? 'Actualizar Producto' : 'Guardar Producto') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+</div>
