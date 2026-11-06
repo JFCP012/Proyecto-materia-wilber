@@ -35,6 +35,12 @@ public class Pedido {
     @Column(name = "fecha_pedido", nullable = false)
     private Date fecha_pedido;
 
+    @Column(name = "nombre_cliente", nullable = false)
+    private String nombre_cliente;
+
+    @Column(name = "direccion_cliente", nullable = false)
+    private String direccion_cliente;
+
     @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Usuario usuario;

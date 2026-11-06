@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Producto } from '../../Models/Producto';
 import { productoService } from '../../Service/productoService';
 
@@ -11,10 +12,13 @@ import { productoService } from '../../Service/productoService';
   styleUrl: './producto.css',
 })
 export class ProductoComponent implements OnInit {
+  private router = inject(Router);
   private productoService = inject(productoService);
   private cdr = inject(ChangeDetectorRef);
 
   // Signals para reactividad en Angular 21 (zoneless)
+  nombreUsuario = signal<string>('Administrador');
+  mostrarModalLogout = signal<boolean>(false);
   productos = signal<Producto[]>([]);
   cargando = signal<boolean>(false);
   errorMensaje = signal<string>('');
@@ -36,7 +40,16 @@ export class ProductoComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.cargarUsuarioSesion();
     this.mostrarTodos();
+  }
+
+  cargarUsuarioSesion(): void {
+    const sesion = localStorage.getItem('usuario');
+    if (sesion) {
+      const u = JSON.parse(sesion);
+      this.nombreUsuario.set(u.nombre_usuario || 'Administrador');
+    }
   }
 
   mostrarTodos(): void {
@@ -186,5 +199,19 @@ export class ProductoComponent implements OnInit {
         console.error('Error al cambiar el estado del producto:', error);
       },
     });
+  }
+
+  // Modal y Control de Sesión
+  abrirModalLogout(): void {
+    this.mostrarModalLogout.set(true);
+  }
+
+  cerrarModalLogout(): void {
+    this.mostrarModalLogout.set(false);
+  }
+
+  confirmarCerrarSesion(): void {
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']);
   }
 }

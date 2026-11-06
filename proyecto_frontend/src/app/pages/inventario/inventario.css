@@ -1,0 +1,48 @@
+.pantalla-inventario{min-height:100vh;background-color:#f8fafc;width:100%;margin:0;padding:0 0 36px;font-family:system-ui,-apple-system,sans-serif;color:#1e293b}
+.encabezado-azul{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;width:100%;margin:0;padding:16px 0;box-shadow:0 2px 6px rgba(29,78,216,.2)}
+.contenido-encabezado{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.titulo-principal{margin:0;font-size:20px;font-weight:700}
+.subtitulo-principal{font-size:13px;color:#dbeafe;display:block;margin-top:2px}
+.acciones-usuario{display:flex;align-items:center;gap:12px}
+.chip-usuario{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);padding:6px 14px;border-radius:20px;font-size:13px}
+.punto-verde{width:8px;height:8px;border-radius:50%;background:#34d399}
+.etiqueta-rol{background:#dbeafe;color:#1e40af;font-size:11px;padding:2px 7px;border-radius:10px;font-weight:700}
+.btn-logout{background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-logout:hover{background:#dc2626}
+.contenedor-cuerpo{max-width:1100px;margin:28px auto 0;padding:0 20px}
+.barra-acciones-tabla{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.titulo-seccion{margin:0;font-size:18px;font-weight:700;color:#0f172a}
+.subtitulo-seccion{margin:2px 0 0;font-size:13px;color:#64748b}
+.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none}
+.btn-recargar{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1}
+.btn-recargar:hover{background:#e2e8f0}
+.alerta-error{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:18px}
+.tabla-contenedor{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:visible;box-shadow:0 2px 4px rgba(0,0,0,.03)}
+.tabla{width:100%;border-collapse:collapse;font-size:14px}
+.tabla th{background:#f8fafc;color:#475569;font-weight:600;font-size:12px;text-transform:uppercase;padding:12px 14px;border-bottom:2px solid #e2e8f0;text-align:left}
+.tabla td{padding:12px 14px;border-bottom:1px solid #f1f5f9;color:#1e293b;position:relative}
+.tabla tr:last-child td{border-bottom:none}
+.tabla tr:hover{background:#f8fafc}
+.centrado{text-align:center}
+.mensaje-tabla{text-align:center;padding:36px 16px!important;color:#64748b;font-size:14px}
+.dropdown-contenedor{position:relative;display:inline-block}
+.btn-dropdown{background:#2563eb;color:#fff;padding:6px 12px;font-size:12px;font-weight:600;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.btn-dropdown:hover{background:#1d4ed8}
+.dropdown-menu{position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);min-width:130px;z-index:50;overflow:hidden}
+.dropdown-opcion{width:100%;padding:9px 12px;font-size:13px;font-weight:600;text-align:left;border:none;background:transparent;cursor:pointer;display:block}
+.dropdown-opcion:hover{background:#f1f5f9}
+.opcion-despachar{color:#15803d}
+.opcion-despachar:hover{background:#f0fdf4}
+.opcion-cancelar{color:#b91c1c}
+.opcion-cancelar:hover{background:#fef2f2}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,.45);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px}
+.modal-caja{background:#fff;border-radius:12px;padding:24px;max-width:380px;width:100%;box-shadow:0 20px 25px -5px rgba(0,0,0,.15);animation:modalAnim .15s ease-out}
+@keyframes modalAnim{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-titulo{margin:0 0 8px;font-size:18px;font-weight:700;color:#0f172a}
+.modal-descripcion{margin:0 0 20px;font-size:14px;color:#64748b;line-height:1.4}
+.modal-acciones{display:flex;justify-content:flex-end;gap:10px}
+.btn-modal{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none}
+.btn-modal-cancelar{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.btn-modal-cancelar:hover{background:#e2e8f0}
+.btn-modal-confirmar{background:#ef4444;color:#fff}
+.btn-modal-confirmar:hover{background:#dc2626}

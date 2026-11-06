@@ -1,0 +1,54 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo-circle">
+        <span class="logo-icon">📦</span>
+      </div>
+      <h2>Distribuidora La Dorada</h2>
+      <p class="subtitulo">Ingresa tus credenciales para acceder al sistema</p>
+    </div>
+
+    @if (errorMensaje()) {
+      <div class="alerta-error">
+        <span>⚠️ {{ errorMensaje() }}</span>
+      </div>
+    }
+
+    <form (ngSubmit)="iniciarSesion()" class="login-form">
+      <div class="campo">
+        <label for="id_usuario">ID de Usuario</label>
+        <input
+          id="id_usuario"
+          type="number"
+          name="id_usuario"
+          [(ngModel)]="id_usuario"
+          placeholder="Ej: 1"
+          required
+          [disabled]="cargando()"
+        />
+      </div>
+
+      <div class="campo">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Ingresa tu contraseña"
+          required
+          [disabled]="cargando()"
+        />
+      </div>
+
+      <button type="submit" class="btn-ingresar" [disabled]="cargando()">
+        @if (cargando()) {
+          <span class="spinner"></span> Iniciando sesión...
+        } @else {
+          Ingresar al Sistema
+        }
+      </button>
+    </form>
+  </div>
+</div>
+

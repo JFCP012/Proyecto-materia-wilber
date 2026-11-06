@@ -1,0 +1,120 @@
+<div class="pantalla-inventario">
+  <!-- ENCABEZADO AZUL COMPLETO DE BORDE A BORDE -->
+  <header class="encabezado-azul">
+    <div class="contenido-encabezado">
+      <div class="info-marca">
+        <h1 class="titulo-principal">Distribuidora La Dorada</h1>
+        <span class="subtitulo-principal">Módulo de Inventario y Bodega — Despacho de Pedidos</span>
+      </div>
+
+      <div class="acciones-usuario">
+        <div class="chip-usuario">
+          <span class="punto-verde"></span>
+          <span class="nombre-usuario">{{ nombreUsuario() }}</span>
+          <span class="etiqueta-rol">Bodega</span>
+        </div>
+
+        <button type="button" class="btn-logout" (click)="abrirModalLogout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO CENTRAL -->
+  <main class="contenedor-cuerpo">
+    <div class="barra-acciones-tabla">
+      <div>
+        <h2 class="titulo-seccion">Pedidos Pendientes por Despachar</h2>
+        <p class="subtitulo-seccion">Listado de pedidos confirmados listos para entrega a transporte</p>
+      </div>
+
+      <button class="btn btn-recargar" (click)="buscarConfirmados()">
+        Refrescar
+      </button>
+    </div>
+
+    @if (errorMensaje()) {
+    <div class="alerta-error">
+      {{ errorMensaje() }}
+    </div>
+    }
+
+    <div class="tabla-contenedor">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th style="width: 12%;">ID Pedido</th>
+            <th style="width: 26%;">Cliente</th>
+            <th style="width: 32%;">Dirección de Entrega</th>
+            <th style="width: 16%;">Fecha</th>
+            <th style="width: 14%; text-align: center;">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (cargando()) {
+          <tr>
+            <td colspan="5" class="mensaje-tabla">Cargando pedidos de bodega...</td>
+          </tr>
+          } @else {
+          @for (ped of pedidos(); track ped.id_pedido) {
+          <tr>
+            <td><strong>#{{ ped.id_pedido }}</strong></td>
+            <td>{{ ped.nombre_cliente || 'Sin nombre' }}</td>
+            <td>{{ ped.direccion_cliente || 'Sin dirección' }}</td>
+            <td>{{ ped.fecha_pedido }}</td>
+            <td class="centrado">
+              <div class="dropdown-contenedor">
+                <button class="btn-dropdown" (click)="toggleMenu(ped.id_pedido!, $event)">
+                  Gestionar <span class="flecha">▾</span>
+                </button>
+
+                @if (menuAbiertoId() === ped.id_pedido) {
+                <div class="dropdown-menu">
+                  <button class="dropdown-opcion opcion-despachar"
+                    (click)="cambiarEstado(ped.id_pedido!, 'Despachado')">
+                    Despachado
+                  </button>
+                  <button class="dropdown-opcion opcion-cancelar"
+                    (click)="cambiarEstado(ped.id_pedido!, 'Cancelado')">
+                    Cancelado
+                  </button>
+                </div>
+                }
+              </div>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="5" class="mensaje-tabla">
+              No hay pedidos pendientes por despachar en este momento.
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL DE CONFIRMACIÓN DE CERRAR SESIÓN -->
+  @if (mostrarModalLogout()) {
+  <div class="modal-overlay" (click)="cerrarModalLogout()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <h3 class="modal-titulo">¿Cerrar Sesión?</h3>
+      <p class="modal-descripcion">
+        Estás a punto de salir del módulo de inventario. ¿Deseas continuar?
+      </p>
+
+      <div class="modal-acciones">
+        <button type="button" class="btn-modal btn-modal-cancelar" (click)="cerrarModalLogout()">
+          Cancelar
+        </button>
+        <button type="button" class="btn-modal btn-modal-confirmar" (click)="confirmarCerrarSesion()">
+          Sí, Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

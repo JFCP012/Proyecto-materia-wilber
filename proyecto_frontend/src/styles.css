@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+/* Reset global de márgenes para que los encabezados cubran de borde a borde */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}

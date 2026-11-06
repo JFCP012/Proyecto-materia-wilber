@@ -1,0 +1,78 @@
+<div class="pantalla-admin">
+  <!-- ENCABEZADO AZUL COMPLETO DE BORDE A BORDE -->
+  <header class="encabezado-azul">
+    <div class="contenido-encabezado">
+      <div class="info-marca">
+        <h1 class="titulo-principal">Distribuidora La Dorada</h1>
+        <span class="subtitulo-principal">Panel de Administración General</span>
+      </div>
+
+      <div class="acciones-usuario">
+        <div class="chip-usuario">
+          <span class="punto-verde"></span>
+          <span class="nombre-vendedor">{{ nombreUsuario() }}</span>
+          <span class="etiqueta-rol">Admin</span>
+        </div>
+
+        <button type="button" class="btn-logout" (click)="abrirModalLogout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO CENTRAL -->
+  <main class="contenedor-cuerpo">
+    <div class="encabezado-seccion">
+      <div>
+        <h2 class="titulo-seccion">Módulos del Sistema</h2>
+        <p class="subtitulo-seccion">Acceso rápido a las diferentes áreas de la distribuidora</p>
+      </div>
+    </div>
+
+    <!-- TARJETAS DE NAVEGACIÓN -->
+    <div class="grid-modulos">
+      <!-- Módulo 1: Productos -->
+      <div class="tarjeta-modulo">
+        <h3 class="modulo-titulo">Gestión de Productos</h3>
+        <p class="modulo-desc">Crea, edita, actualiza stock y administra los precios del catálogo comercial.</p>
+        <a routerLink="/producto" class="btn-modulo btn-azul">Ir a Productos</a>
+      </div>
+
+      <!-- Módulo 2: Ventas -->
+      <div class="tarjeta-modulo">
+        <h3 class="modulo-titulo">Toma de Pedidos (Ventas)</h3>
+        <p class="modulo-desc">Registra órdenes de compra de clientes con verificación de stock en tiempo real.</p>
+        <a routerLink="/vendedor" class="btn-modulo btn-verde">Ir a Ventas</a>
+      </div>
+
+      <!-- Módulo 3: Inventario y Despacho -->
+      <div class="tarjeta-modulo">
+        <h3 class="modulo-titulo">Inventario y Bodega</h3>
+        <p class="modulo-desc">Supervisa los pedidos confirmados y gestiona el despacho o cancelación de entregas.</p>
+        <a routerLink="/inventario" class="btn-modulo btn-indigo">Ir a Bodega</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL DE CONFIRMACIÓN DE CERRAR SESIÓN -->
+  @if (mostrarModalLogout()) {
+  <div class="modal-overlay" (click)="cerrarModalLogout()">
+    <div class="modal-caja-logout" (click)="$event.stopPropagation()">
+      <h3 class="modal-titulo-logout">¿Cerrar Sesión?</h3>
+      <p class="modal-descripcion-logout">
+        Estás a punto de salir del panel de administración. ¿Deseas continuar?
+      </p>
+
+      <div class="modal-acciones-logout">
+        <button type="button" class="btn-modal btn-modal-cancelar" (click)="cerrarModalLogout()">
+          Cancelar
+        </button>
+        <button type="button" class="btn-modal btn-modal-confirmar" (click)="confirmarCerrarSesion()">
+          Sí, Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>
