@@ -1,0 +1,59 @@
+.pantalla-vendedor{min-height:100vh;background-color:#f8fafc;width:100%;margin:0;padding:0 0 36px}
+.encabezado-azul{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;width:100%;margin:0;padding:16px 0;box-shadow:0 2px 6px rgba(29,78,216,.2)}
+.contenido-encabezado{max-width:1050px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.titulo-principal{margin:0;font-size:20px;font-weight:700}
+.subtitulo-principal{font-size:13px;color:#dbeafe;display:block;margin-top:2px}
+.acciones-usuario{display:flex;align-items:center;gap:12px}
+.chip-usuario{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);padding:6px 14px;border-radius:20px;font-size:13px}
+.punto-verde{width:8px;height:8px;border-radius:50%;background:#34d399}
+.etiqueta-rol{background:#dbeafe;color:#1e40af;font-size:11px;padding:2px 7px;border-radius:10px;font-weight:700}
+.btn-logout{background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-logout:hover{background:#dc2626}
+.contenedor-cuerpo{max-width:1050px;margin:24px auto 0;padding:0 20px}
+.alerta{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:18px}
+.alerta-exito{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.alerta-error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.formulario-panel{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 2px 4px rgba(0,0,0,.03);display:flex;flex-direction:column;gap:22px}
+.seccion-bloque{display:flex;flex-direction:column;gap:12px}
+.titulo-seccion{margin:0;font-size:16px;color:#1e293b;font-weight:700;border-left:4px solid #2563eb;padding-left:10px}
+.grid-cliente{display:grid;grid-template-columns:1.2fr 1.6fr 130px;gap:14px}
+@media(max-width:768px){.grid-cliente{grid-template-columns:1fr}}
+.campo{display:flex;flex-direction:column;gap:5px}
+.campo label{font-size:13px;font-weight:600;color:#475569}
+.req{color:#ef4444}
+.control-input{padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;color:#1e293b;outline:none;width:100%;box-sizing:border-box}
+.control-input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.cabecera-productos{display:flex;justify-content:space-between;align-items:center}
+.btn-agregar{background:#f1f5f9;color:#1e293b;border:1px solid #cbd5e1;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-agregar:hover{background:#e2e8f0}
+.tabla-scroll{border:1px solid #e2e8f0;border-radius:6px;overflow-x:auto}
+.tabla-articulos{width:100%;border-collapse:collapse;font-size:14px}
+.tabla-articulos th{background:#f8fafc;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase;padding:9px 12px;border-bottom:2px solid #e2e8f0;text-align:left}
+.tabla-articulos td{padding:9px 12px;border-bottom:1px solid #f1f5f9;vertical-align:middle;background:#fff}
+.cant-input{max-width:80px;text-align:center}
+.chip-stock{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.stock-ok{background:#ecfdf5;color:#047857}
+.stock-cero{background:#fef2f2;color:#b91c1c}
+.precio-unit{color:#475569;font-weight:500}
+.subtotal-val{color:#0f172a;font-weight:700}
+.apagado{color:#94a3b8}
+.btn-eliminar{background:transparent;border:none;cursor:pointer;font-size:16px;color:#94a3b8;border-radius:4px;padding:3px 6px}
+.btn-eliminar:hover{background:#fee2e2;color:#ef4444}
+.pie-formulario{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e2e8f0;padding-top:18px;flex-wrap:wrap;gap:12px}
+.caja-total{display:flex;align-items:baseline;gap:10px}
+.etiqueta-total{font-size:14px;font-weight:600;color:#64748b}
+.monto-total{font-size:26px;font-weight:800;color:#0f172a}
+.btn-confirmar{background:#2563eb;color:#fff;padding:10px 24px;font-size:14px;font-weight:700;border:none;border-radius:6px;cursor:pointer}
+.btn-confirmar:hover:not(:disabled){background:#1d4ed8}
+.btn-confirmar:disabled{opacity:.6;cursor:not-allowed}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,.45);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px}
+.modal-caja{background:#fff;border-radius:12px;padding:24px;max-width:380px;width:100%;box-shadow:0 20px 25px -5px rgba(0,0,0,.15);animation:modalAnim .15s ease-out}
+@keyframes modalAnim{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-titulo{margin:0 0 8px;font-size:18px;font-weight:700;color:#0f172a}
+.modal-descripcion{margin:0 0 20px;font-size:14px;color:#64748b;line-height:1.4}
+.modal-acciones{display:flex;justify-content:flex-end;gap:10px}
+.btn-modal{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none}
+.btn-modal-cancelar{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.btn-modal-cancelar:hover{background:#e2e8f0}
+.btn-modal-confirmar{background:#ef4444;color:#fff}
+.btn-modal-confirmar:hover{background:#dc2626}

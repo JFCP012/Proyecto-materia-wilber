@@ -19,15 +19,13 @@ export class productoService {
         return this.http.get<Producto>(`${this.apiUrl}/BuscarPorId/${id}`);
     }
 
-    buscarPorNombre(nombre: string): Observable<Producto[]> {
+    buscarPorNombre(nombre?: string): Observable<Producto[]> {
+        if (!nombre || nombre.trim() === '') {
+            return this.buscarTodo();
+        }
         return this.http.get<Producto[]>(`${this.apiUrl}/BuscarPorNombre`, {
-            params: { nombre }
+            params: { nombre: nombre.trim() }
         });
-    }
-
-    // Alias compatible con el nombre usado anteriormente
-    buscar_porNombre(nombre: string): Observable<Producto[]> {
-        return this.buscarPorNombre(nombre);
     }
 
     crearProducto(producto: Producto): Observable<Producto> {

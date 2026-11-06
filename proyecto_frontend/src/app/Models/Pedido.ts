@@ -2,7 +2,8 @@ import { Usuario } from "./Usuario";
 
 export interface Pedido {
     id_pedido?: number;
-    nombre_pedido?: string;
+    nombre_cliente?: string;
+    direccion_cliente?: string;
     estado_pedido?: string;
     fecha_pedido: Date | string;
     usuario?: Usuario;

@@ -1,0 +1,180 @@
+<div class="pantalla-vendedor">
+  <!-- ENCABEZADO AZUL COMPLETO DE BORDE A BORDE -->
+  <header class="encabezado-azul">
+    <div class="contenido-encabezado">
+      <div class="info-marca">
+        <h1 class="titulo-principal">Distribuidora La Dorada</h1>
+        <span class="subtitulo-principal">Panel de Ventas — Toma de Pedidos</span>
+      </div>
+
+      <div class="acciones-usuario">
+        <div class="chip-usuario">
+          <span class="punto-verde"></span>
+          <span class="nombre-vendedor">{{ nombreUsuario() }}</span>
+          <span class="etiqueta-rol">Vendedor</span>
+        </div>
+
+        <button type="button" class="btn-logout" (click)="abrirModalLogout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO CENTRAL DEL FORMULARIO -->
+  <main class="contenedor-cuerpo">
+    @if (mensajeExito()) {
+    <div class="alerta alerta-exito">
+      {{ mensajeExito() }}
+    </div>
+    }
+
+    @if (mensajeError()) {
+    <div class="alerta alerta-error">
+      {{ mensajeError() }}
+    </div>
+    }
+
+    <form (ngSubmit)="crearPedido()" class="formulario-panel">
+      <!-- BLOQUE 1: DATOS DEL CLIENTE -->
+      <div class="seccion-bloque">
+        <h2 class="titulo-seccion">Datos del Cliente</h2>
+
+        <div class="grid-cliente">
+          <div class="campo">
+            <label for="nombreCliente">Nombre del Cliente <span class="req">*</span></label>
+            <input type="text" id="nombreCliente" name="nombreCliente" [(ngModel)]="pedidoDTO.nombreCliente"
+              placeholder="Nombre o razón social" required class="control-input" />
+          </div>
+
+          <div class="campo">
+            <label for="direccionCliente">Dirección de Entrega <span class="req">*</span></label>
+            <input type="text" id="direccionCliente" name="direccionCliente" [(ngModel)]="pedidoDTO.direccionCliente"
+              placeholder="Dirección completa" required class="control-input" />
+          </div>
+
+          <div class="campo campo-id">
+            <label for="idUsuario">ID Vendedor <span class="req">*</span></label>
+            <input type="number" id="idUsuario" name="idUsuario" [(ngModel)]="pedidoDTO.idUsuario" placeholder="ID"
+              required class="control-input" />
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOQUE 2: PRODUCTOS -->
+      <div class="seccion-bloque">
+        <div class="cabecera-productos">
+          <h2 class="titulo-seccion">Productos a Pedir</h2>
+          <button type="button" class="btn-agregar" (click)="agregarProducto()">
+            + Agregar Producto
+          </button>
+        </div>
+
+        <datalist id="lista-productos">
+          @for (prod of productos(); track prod.id_producto) {
+          <option [value]="prod.nombre_producto">
+            Stock: {{ prod.stock }} unid. | ${{ prod.precio | number:'1.0-0' }}
+          </option>
+          }
+        </datalist>
+
+        <div class="tabla-scroll">
+          <table class="tabla-articulos">
+            <thead>
+              <tr>
+                <th style="width: 44%;">Producto</th>
+                <th style="width: 14%; text-align: center;">Stock</th>
+                <th style="width: 15%; text-align: right;">Precio Unit.</th>
+                <th style="width: 11%; text-align: center;">Cantidad</th>
+                <th style="width: 16%; text-align: right;">Subtotal</th>
+                <th style="width: 5%; text-align: center;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (detalle of pedidoDTO.detalles; track $index) {
+              <tr>
+                <td>
+                  <input list="lista-productos" class="control-input" placeholder="Escribe o selecciona producto..."
+                    [(ngModel)]="detalle.nombreProducto" name="nombre_prod_{{ $index }}"
+                    (input)="seleccionarProducto($index)" (change)="seleccionarProducto($index)" autocomplete="off" />
+                </td>
+
+                <td style="text-align: center;">
+                  @if (obtenerProducto(detalle.idProducto); as prod) {
+                  <span class="chip-stock" [class.stock-ok]="prod.stock > 0" [class.stock-cero]="prod.stock === 0">
+                    {{ prod.stock }} unid.
+                  </span>
+                  } @else {
+                  <span class="apagado">—</span>
+                  }
+                </td>
+
+                <td style="text-align: right;" class="precio-unit">
+                  @if (obtenerProducto(detalle.idProducto); as prod) {
+                  ${{ prod.precio | number:'1.0-0' }}
+                  } @else {
+                  <span class="apagado">—</span>
+                  }
+                </td>
+
+                <td style="text-align: center;">
+                  <input type="number" class="control-input cant-input" [(ngModel)]="detalle.cantidad"
+                    name="cantidad_{{ $index }}" min="1" placeholder="0"
+                    [max]="obtenerProducto(detalle.idProducto)?.stock || 9999" />
+                </td>
+
+                <td style="text-align: right;" class="subtotal-val">
+                  ${{ calcularSubtotal(detalle) | number:'1.0-0' }}
+                </td>
+
+                <td style="text-align: center;">
+                  <button type="button" class="btn-eliminar" (click)="eliminarProducto($index)" title="Quitar">
+                    ×
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BLOQUE 3: TOTAL Y BOTÓN DE CONFIRMACIÓN -->
+      <div class="pie-formulario">
+        <div class="caja-total">
+          <span class="etiqueta-total">Total a Pagar:</span>
+          <span class="monto-total">${{ calcularTotal() | number:'1.0-0' }}</span>
+        </div>
+
+        <button type="submit" class="btn-confirmar" [disabled]="guardando()">
+          @if (guardando()) {
+          Procesando...
+          } @else {
+          Confirmar y Crear Pedido
+          }
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <!-- MODAL PERSONALIZADO DE CONFIRMACIÓN DE CERRAR SESIÓN -->
+  @if (mostrarModalLogout()) {
+  <div class="modal-overlay" (click)="cerrarModalLogout()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <h3 class="modal-titulo">¿Cerrar Sesión?</h3>
+      <p class="modal-descripcion">
+        Estás a punto de salir del sistema de ventas. ¿Deseas continuar?
+      </p>
+
+      <div class="modal-acciones">
+        <button type="button" class="btn-modal btn-modal-cancelar" (click)="cerrarModalLogout()">
+          Cancelar
+        </button>
+        <button type="button" class="btn-modal btn-modal-confirmar" (click)="confirmarCerrarSesion()">
+          Sí, Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>
