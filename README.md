@@ -4,14 +4,14 @@ Sistema web integral para el control de inventarios, generación de pedidos de v
 
 ---
 
-## 📌 Información del Repositorio
+##  Información del Repositorio
 
 * **URL del Repositorio:** [https://github.com/JFCP012/Proyecto-materia-wilber.git](https://github.com/JFCP012/Proyecto-materia-wilber.git)
 * **Rama Principal de Trabajo:** `Jaider`
 
 ---
 
-## 🏗️ Arquitectura y Tecnologías
+##  Arquitectura y Tecnologías
 
 * **Frontend:**
   * Angular 21 (Zoneless, Signals)
@@ -39,7 +39,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
 ---
 
-## 🚀 Guía de Instalación y Ejecución
+##  Guía de Instalación y Ejecución
 
 ### 1. Configuración de la Base de Datos (PostgreSQL)
 
@@ -141,7 +141,7 @@ SELECT setval('producto_id_producto_seq', (SELECT COALESCE(MAX(id_producto), 1) 
 
 ---
 
-## 🔑 Credenciales de Acceso y Roles
+##  Credenciales de Acceso y Roles
 
 El login solicita el **ID numérico de usuario** y su **contraseña**:
 
@@ -153,7 +153,7 @@ El login solicita el **ID numérico de usuario** y su **contraseña**:
 
 ---
 
-## 🧪 Casos de Prueba (Datos de Prueba)
+##  Casos de Prueba (Datos de Prueba)
 
 ### Caso 1: Pedido Válido
 * **Objetivo:** Con **20 detergentes disponibles**, solicitar **5**; confirmar el pedido y comprobar que las existencias se actualizan **una sola vez**.
@@ -200,7 +200,7 @@ El login solicita el **ID numérico de usuario** y su **contraseña**:
 
 ---
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```text
 Proyecto-materia-wilber/
