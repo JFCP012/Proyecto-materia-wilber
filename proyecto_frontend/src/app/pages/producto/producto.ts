@@ -52,6 +52,10 @@ export class ProductoComponent implements OnInit {
     }
   }
 
+  volverAAdmin(): void {
+    this.router.navigate(['/admin']);
+  }
+
   mostrarTodos(): void {
     this.cargando.set(true);
     this.errorMensaje.set('');

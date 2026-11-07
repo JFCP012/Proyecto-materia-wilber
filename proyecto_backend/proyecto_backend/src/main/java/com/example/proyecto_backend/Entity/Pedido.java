@@ -38,6 +38,9 @@ public class Pedido {
     @Column(name = "nombre_cliente", nullable = false)
     private String nombre_cliente;
 
+    @Column(name = "cedula_cliente")
+    private String cedula_cliente;
+
     @Column(name = "direccion_cliente", nullable = false)
     private String direccion_cliente;
 

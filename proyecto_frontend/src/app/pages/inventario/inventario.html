@@ -11,7 +11,7 @@
         <div class="chip-usuario">
           <span class="punto-verde"></span>
           <span class="nombre-usuario">{{ nombreUsuario() }}</span>
-          <span class="etiqueta-rol">Bodega</span>
+          <span class="etiqueta-rol">{{ rolUsuario() }}</span>
         </div>
 
         <button type="button" class="btn-logout" (click)="abrirModalLogout()">
@@ -26,7 +26,7 @@
     <div class="barra-acciones-tabla">
       <div>
         <h2 class="titulo-seccion">Pedidos Pendientes por Despachar</h2>
-        <p class="subtitulo-seccion">Listado de pedidos confirmados listos para entrega a transporte</p>
+        <p class="subtitulo-seccion">Listado de pedidos confirmados y productos a preparar para entrega</p>
       </div>
 
       <button class="btn btn-recargar" (click)="buscarConfirmados()">
@@ -44,39 +44,61 @@
       <table class="tabla">
         <thead>
           <tr>
-            <th style="width: 12%;">ID Pedido</th>
-            <th style="width: 26%;">Cliente</th>
-            <th style="width: 32%;">Dirección de Entrega</th>
-            <th style="width: 16%;">Fecha</th>
-            <th style="width: 14%; text-align: center;">Acción</th>
+            <th style="width: 5%;">ID</th>
+            <th style="width: 13%;">Cliente</th>
+            <th style="width: 9%;">Cédula</th>
+            <th style="width: 14%;">Dirección</th>
+            <th style="width: 10%;">Vendedor</th>
+            <th style="width: 22%;">Producto</th>
+            <th style="width: 7%; text-align: center;">Cantidad</th>
+            <th style="width: 9%; text-align: right;">Total Pedido</th>
+            <th style="width: 6%; text-align: center;">Fecha</th>
+            <th style="width: 5%; text-align: center;">Acción</th>
           </tr>
         </thead>
         <tbody>
           @if (cargando()) {
           <tr>
-            <td colspan="5" class="mensaje-tabla">Cargando pedidos de bodega...</td>
+            <td colspan="10" class="mensaje-tabla">Cargando pedidos de bodega...</td>
           </tr>
           } @else {
           @for (ped of pedidos(); track ped.id_pedido) {
           <tr>
             <td><strong>#{{ ped.id_pedido }}</strong></td>
-            <td>{{ ped.nombre_cliente || 'Sin nombre' }}</td>
-            <td>{{ ped.direccion_cliente || 'Sin dirección' }}</td>
-            <td>{{ ped.fecha_pedido }}</td>
+            <td>{{ ped.nombre_cliente || 'Sin cliente' }}</td>
+            <td>{{ ped.cedula_cliente || 'N/A' }}</td>
+            <td class="col-direccion" [title]="ped.direccion_cliente || ''">
+              {{ ped.direccion_cliente || 'Sin dirección' }}
+            </td>
+            <td>
+              <span class="etiqueta-vendedor">{{ ped.nombre_usuario || 'Sin asignar' }}</span>
+            </td>
+            <td>
+              <span class="chip-producto">{{ ped.producto }}</span>
+            </td>
+            <td class="centrado">
+              <span class="badge-cantidad">{{ ped.cantidad }} unid.</span>
+            </td>
+            <td class="derecha texto-total">
+              ${{ ped.total | number:'1.0-0' }}
+            </td>
+            <td class="centrado texto-fecha">
+              {{ ped.fecha_pedido | date:'yyyy-MM-dd' }}
+            </td>
             <td class="centrado">
               <div class="dropdown-contenedor">
-                <button class="btn-dropdown" (click)="toggleMenu(ped.id_pedido!, $event)">
+                <button class="btn-dropdown" (click)="toggleMenu(ped.id_pedido, $event)">
                   Gestionar <span class="flecha">▾</span>
                 </button>
 
                 @if (menuAbiertoId() === ped.id_pedido) {
                 <div class="dropdown-menu">
                   <button class="dropdown-opcion opcion-despachar"
-                    (click)="cambiarEstado(ped.id_pedido!, 'Despachado')">
+                    (click)="cambiarEstado(ped.id_pedido, 'Despachado')">
                     Despachado
                   </button>
                   <button class="dropdown-opcion opcion-cancelar"
-                    (click)="cambiarEstado(ped.id_pedido!, 'Cancelado')">
+                    (click)="cambiarEstado(ped.id_pedido, 'Cancelado')">
                     Cancelado
                   </button>
                 </div>
@@ -86,7 +108,7 @@
           </tr>
           } @empty {
           <tr>
-            <td colspan="5" class="mensaje-tabla">
+            <td colspan="10" class="mensaje-tabla">
               No hay pedidos pendientes por despachar en este momento.
             </td>
           </tr>

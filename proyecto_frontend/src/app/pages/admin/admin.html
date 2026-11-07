@@ -23,34 +23,185 @@
 
   <!-- CONTENIDO CENTRAL -->
   <main class="contenedor-cuerpo">
+    <!-- SECCIÓN 1: ACCESO RÁPIDO A MÓDULOS -->
     <div class="encabezado-seccion">
       <div>
         <h2 class="titulo-seccion">Módulos del Sistema</h2>
-        <p class="subtitulo-seccion">Acceso rápido a las diferentes áreas de la distribuidora</p>
+        <p class="subtitulo-seccion">Acceso directo a las áreas operativas de la distribuidora</p>
       </div>
     </div>
 
-    <!-- TARJETAS DE NAVEGACIÓN -->
     <div class="grid-modulos">
       <!-- Módulo 1: Productos -->
       <div class="tarjeta-modulo">
-        <h3 class="modulo-titulo">Gestión de Productos</h3>
-        <p class="modulo-desc">Crea, edita, actualiza stock y administra los precios del catálogo comercial.</p>
+        <div>
+          <h3 class="modulo-titulo">Gestión de Productos</h3>
+          <p class="modulo-desc">Crea, edita, actualiza stock y administra los precios del catálogo comercial.</p>
+        </div>
         <a routerLink="/producto" class="btn-modulo btn-azul">Ir a Productos</a>
       </div>
 
       <!-- Módulo 2: Ventas -->
       <div class="tarjeta-modulo">
-        <h3 class="modulo-titulo">Toma de Pedidos (Ventas)</h3>
-        <p class="modulo-desc">Registra órdenes de compra de clientes con verificación de stock en tiempo real.</p>
+        <div>
+          <h3 class="modulo-titulo">Toma de Pedidos (Ventas)</h3>
+          <p class="modulo-desc">Registra órdenes de compra de clientes con verificación de stock en tiempo real.</p>
+        </div>
         <a routerLink="/vendedor" class="btn-modulo btn-verde">Ir a Ventas</a>
       </div>
+    </div>
 
-      <!-- Módulo 3: Inventario y Despacho -->
-      <div class="tarjeta-modulo">
-        <h3 class="modulo-titulo">Inventario y Bodega</h3>
-        <p class="modulo-desc">Supervisa los pedidos confirmados y gestiona el despacho o cancelación de entregas.</p>
-        <a routerLink="/inventario" class="btn-modulo btn-indigo">Ir a Bodega</a>
+    <!-- SECCIÓN 2: MONITOREO GENERAL DE PEDIDOS CON FILTROS -->
+    <div class="seccion-tabla-pedidos">
+      <div class="barra-filtros-pedidos">
+        <div>
+          <h2 class="titulo-seccion">Monitoreo General de Pedidos</h2>
+          <p class="subtitulo-seccion">Consulta y supervisa todos los pedidos en tiempo real</p>
+        </div>
+
+        <div class="grupo-botones-filtros">
+          <button type="button" class="btn-filtro filtro-todos"
+            [class.activo]="estadoActual() === 'Todos'"
+            (click)="cargarPedidos('Todos')">
+            Todos
+          </button>
+
+          <button type="button" class="btn-filtro filtro-confirmado"
+            [class.activo]="estadoActual() === 'Confirmado'"
+            (click)="cargarPedidos('Confirmado')">
+            Confirmados
+          </button>
+
+          <button type="button" class="btn-filtro filtro-despachado"
+            [class.activo]="estadoActual() === 'Despachado'"
+            (click)="cargarPedidos('Despachado')">
+            Despachados
+          </button>
+
+          <button type="button" class="btn-filtro filtro-cancelado"
+            [class.activo]="estadoActual() === 'Cancelado'"
+            (click)="cargarPedidos('Cancelado')">
+            Cancelados
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtro de Fecha (Día o Mes) -->
+      <div class="barra-filtros-fechas">
+        <span class="label-filtro">Fecha:</span>
+        <div class="control-input-fecha">
+          <label>Día:</label>
+          <input type="date" [value]="fechaSeleccionada()" (change)="alCambiarDia($event)" class="input-fecha">
+        </div>
+
+        <div class="control-input-fecha">
+          <label>Mes:</label>
+          <input type="month" [value]="mesSeleccionado()" (change)="alCambiarMes($event)" class="input-fecha">
+        </div>
+
+        <button type="button" class="btn-filtro-accion" (click)="filtrarHoy()">Hoy</button>
+        <button type="button" class="btn-filtro-accion" (click)="filtrarEsteMes()">Este Mes</button>
+        <button type="button" class="btn-filtro-accion btn-limpiar" (click)="limpiarFiltroFecha()">Ver Todo</button>
+        <button type="button" class="btn btn-recargar" (click)="cargarPedidos()">Refrescar</button>
+      </div>
+
+      <!-- Tarjeta Resumen Total Vendido -->
+      <div class="tarjeta-resumen-total">
+        <div class="icono-resumen-total">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div class="info-resumen-total">
+          <span class="label-resumen-total">Total Vendido</span>
+          <span class="valor-resumen-total">{{ totalVendidoFormateado() }}</span>
+        </div>
+        <div class="conteo-resumen-total">
+          <span class="badge-conteo">{{ cantidadPedidos() }} {{ cantidadPedidos() === 1 ? 'orden' : 'órdenes' }}</span>
+        </div>
+      </div>
+
+      @if (errorMensaje()) {
+      <div class="alerta-error">
+        {{ errorMensaje() }}
+      </div>
+      }
+
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th style="width: 5%;">ID</th>
+              <th style="width: 13%;">Cliente</th>
+              <th style="width: 9%;">Cédula</th>
+              <th style="width: 14%;">Dirección</th>
+              <th style="width: 10%;">Vendedor</th>
+              <th style="width: 22%;">Producto</th>
+              <th style="width: 7%; text-align: center;">Cantidad</th>
+              <th style="width: 8%; text-align: right;">Total Pedido</th>
+              <th style="width: 6%; text-align: center;">Fecha</th>
+              <th style="width: 6%; text-align: center;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (cargando()) {
+            <tr>
+              <td colspan="10" class="mensaje-tabla">
+                @if (estadoActual() === 'Todos') {
+                  Cargando todos los pedidos...
+                } @else {
+                  Cargando pedidos en estado "{{ estadoActual() }}"...
+                }
+              </td>
+            </tr>
+            } @else {
+            @for (ped of pedidos(); track ped.id_pedido) {
+            <tr>
+              <td><strong>#{{ ped.id_pedido }}</strong></td>
+              <td>{{ ped.nombre_cliente || 'Sin cliente' }}</td>
+              <td>{{ ped.cedula_cliente || 'N/A' }}</td>
+              <td class="col-direccion" [title]="ped.direccion_cliente || ''">
+                {{ ped.direccion_cliente || 'Sin dirección' }}
+              </td>
+              <td>
+                <span class="etiqueta-vendedor">{{ ped.nombre_usuario || 'Sin asignar' }}</span>
+              </td>
+              <td>
+                <span class="chip-producto">{{ ped.producto }}</span>
+              </td>
+              <td class="centrado">
+                <span class="badge-cantidad">{{ ped.cantidad }} unid.</span>
+              </td>
+              <td class="derecha texto-total">
+                ${{ ped.total | number:'1.0-0' }}
+              </td>
+              <td class="centrado texto-fecha">
+                {{ ped.fecha_pedido | date:'yyyy-MM-dd' }}
+              </td>
+              <td class="centrado">
+                <span class="badge-estado"
+                  [class.estado-confirmado]="ped.estado_pedido === 'Confirmado'"
+                  [class.estado-despachado]="ped.estado_pedido === 'Despachado'"
+                  [class.estado-cancelado]="ped.estado_pedido === 'Cancelado'">
+                  {{ ped.estado_pedido }}
+                </span>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="mensaje-tabla">
+                @if (estadoActual() === 'Todos') {
+                  No se encontraron pedidos registrados en el sistema.
+                } @else {
+                  No hay pedidos en estado "{{ estadoActual() }}" en este momento.
+                }
+              </td>
+            </tr>
+            }
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   </main>

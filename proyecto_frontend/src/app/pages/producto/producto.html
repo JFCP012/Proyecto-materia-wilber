@@ -2,9 +2,19 @@
   <!-- ENCABEZADO AZUL COMPLETO DE BORDE A BORDE -->
   <header class="encabezado-azul">
     <div class="contenido-encabezado">
-      <div class="info-marca">
-        <h1 class="titulo-principal">Distribuidora La Dorada</h1>
-        <span class="subtitulo-principal">Módulo de Catálogo y Administración de Productos</span>
+      <div class="bloque-izquierdo-encabezado">
+        <button type="button" class="btn-volver-atras" (click)="volverAAdmin()" title="Volver al Panel de Admin">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Volver</span>
+        </button>
+
+        <div class="info-marca">
+          <h1 class="titulo-principal">Distribuidora La Dorada</h1>
+          <span class="subtitulo-principal">Módulo de Catálogo y Administración de Productos</span>
+        </div>
       </div>
 
       <div class="acciones-usuario">

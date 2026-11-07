@@ -2,16 +2,37 @@
   <!-- ENCABEZADO AZUL COMPLETO DE BORDE A BORDE -->
   <header class="encabezado-azul">
     <div class="contenido-encabezado">
-      <div class="info-marca">
-        <h1 class="titulo-principal">Distribuidora La Dorada</h1>
-        <span class="subtitulo-principal">Panel de Ventas — Toma de Pedidos</span>
+      <div class="bloque-izquierdo-encabezado">
+        @if (esAdmin()) {
+        <button type="button" class="btn-volver-atras" (click)="volverAAdmin()" title="Volver al Panel de Admin">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Volver a Admin</span>
+        </button>
+        }
+
+        <div class="info-marca">
+          <h1 class="titulo-principal">Distribuidora La Dorada</h1>
+          <span class="subtitulo-principal">Panel de Ventas — Toma de Pedidos</span>
+        </div>
       </div>
 
       <div class="acciones-usuario">
+        <button type="button" class="btn-consultar-pedidos" (click)="irAPedidos()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+          </svg>
+          <span>Ver Pedidos</span>
+        </button>
+
         <div class="chip-usuario">
           <span class="punto-verde"></span>
           <span class="nombre-vendedor">{{ nombreUsuario() }}</span>
-          <span class="etiqueta-rol">Vendedor</span>
+          <span class="etiqueta-rol">{{ rolUsuario() }}</span>
         </div>
 
         <button type="button" class="btn-logout" (click)="abrirModalLogout()">
@@ -44,7 +65,13 @@
           <div class="campo">
             <label for="nombreCliente">Nombre del Cliente <span class="req">*</span></label>
             <input type="text" id="nombreCliente" name="nombreCliente" [(ngModel)]="pedidoDTO.nombreCliente"
-              placeholder="Nombre o razón social" required class="control-input" />
+              placeholder="Nombre del cliente/empresa" required class="control-input" />
+          </div>
+
+          <div class="campo">
+            <label for="cedulaCliente">Cédula / NIT <span class="req">*</span></label>
+            <input type="text" id="cedulaCliente" name="cedulaCliente" [(ngModel)]="pedidoDTO.cedulaCliente"
+              placeholder="Número de identificación" required class="control-input" />
           </div>
 
           <div class="campo">
