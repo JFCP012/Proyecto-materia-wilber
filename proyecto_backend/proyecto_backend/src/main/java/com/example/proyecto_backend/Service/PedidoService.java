@@ -1,21 +1,19 @@
 package com.example.proyecto_backend.Service;
 
-import com.example.proyecto_backend.Repository.detallePedidoRepositorio;
 import com.example.proyecto_backend.Service.UsuarioService;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.proyecto_backend.DTO.DetallePedidoDTO;
+import com.example.proyecto_backend.DTO.PedidoBodegaDTO;
 import com.example.proyecto_backend.DTO.PedidoDTO;
 import com.example.proyecto_backend.Entity.Pedido;
 import com.example.proyecto_backend.Entity.Usuario;
 import com.example.proyecto_backend.Repository.PedidoRepositorio;
-import com.example.proyecto_backend.Repository.UsuarioRepositorio;
-import java.util.List;
 import jakarta.transaction.Transactional;
-import java.sql.Date;;
 
 @Service
 public class PedidoService {
@@ -40,15 +38,17 @@ public class PedidoService {
         pedido.setEstado_pedido("Confirmado");
         Usuario usuario = new Usuario();
         usuario = this.usuarioService.buscarPorId(pedidoDTO.getIdUsuario());
-        // Verificamos que exista
         if (usuario == null) {
             throw new RuntimeException("Usuario no encontrado con ID: " + pedidoDTO.getIdUsuario());
         }
-        if (!"Vendedor".equalsIgnoreCase(usuario.getRol())) {
-            throw new RuntimeException("Acceso denegado: Solo los vendedores pueden crear pedidos.");
+        boolean esRolValido = "Vendedor".equalsIgnoreCase(usuario.getRol())
+                || "Admin".equalsIgnoreCase(usuario.getRol());
+        if (!esRolValido) {
+            throw new RuntimeException("Acceso denegado: Solo los vendedores o administradores pueden crear pedidos.");
         }
         pedido.setUsuario(usuario);
         pedido.setNombre_cliente(pedidoDTO.getNombreCliente());
+        pedido.setCedula_cliente(pedidoDTO.getCedulaCliente());
         pedido.setDireccion_cliente(pedidoDTO.getDireccionCliente());
         // 2. Guardamos el pedido en la base de datos (aquí se genera el ID)
         Pedido pedidoGuardado = this.pedidoRepositorio.save(pedido);
@@ -56,13 +56,11 @@ public class PedidoService {
         for (DetallePedidoDTO detDto : pedidoDTO.getDetalles()) {
             this.detallePedidoService.crearDetallePedido(pedidoGuardado.getId_pedido(), detDto);
         }
-        // 4. RETORNAMOS EL RESULTADO (esto es lo que quita el error rojo)
         return pedidoGuardado;
     }
 
     public Pedido buscarPorID(Long id_pedido) {
         return this.pedidoRepositorio.findById(id_pedido).orElse(null);
-
     }
 
     public Pedido cambiarEstadoPedido(Long id_pedido, String nuevoEstado) {
@@ -74,7 +72,6 @@ public class PedidoService {
             throw new RuntimeException("No se puede cambiar el estado: el pedido actualmente está '"
                     + pedido.getEstado_pedido() + "' (solo se pueden cambiar pedidos 'Confirmado').");
         }
-        // 4. Validamos que el nuevo estado sea válido para bodega
         boolean esEstadoValido = "Despachado".equalsIgnoreCase(nuevoEstado)
                 || "Cancelado".equalsIgnoreCase(nuevoEstado);
         if (!esEstadoValido) {
@@ -84,7 +81,33 @@ public class PedidoService {
         return this.pedidoRepositorio.save(pedido);
     }
 
-    public List<Pedido> buscarPorEstado(String estado) {
-        return this.pedidoRepositorio.buscarPorEstado(estado);
+    public List<PedidoBodegaDTO> filtrarPedidos(String estado, Date fecha, Integer anio, Integer mes) {
+        String est = (estado == null || estado.trim().isEmpty()) ? "Todos" : estado;
+        // Caso 1: Si enviaron un DÍA específico
+        if (fecha != null) {
+            return this.pedidoRepositorio.buscarPorDia(est, fecha);
+        }
+        // Caso 2: Si enviaron MES y AÑO
+        if (mes != null && anio != null) {
+            return this.pedidoRepositorio.buscarPorMes(est, anio, mes);
+        }
+        // Caso 3: Sin filtro de fecha (histórico completo)
+        return this.pedidoRepositorio.buscarSinFecha(est);
     }
+
+    public List<PedidoBodegaDTO> filtrarPorNombre(String nombre, String cedula) {
+        String nombreStr = (nombre != null && !nombre.trim().isEmpty())
+                ? nombre.trim().toLowerCase()
+                : null;
+        String cedulaStr = (cedula != null && !cedula.trim().isEmpty())
+                ? cedula.trim()
+                : null;
+
+        if (nombreStr == null && cedulaStr == null) {
+            return this.pedidoRepositorio.buscarSinFecha("Todos");
+        }
+
+        return this.pedidoRepositorio.buscarPorNombre(nombreStr, cedulaStr);
+    }
+
 }

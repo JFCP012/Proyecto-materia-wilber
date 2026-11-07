@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, ChangeDetectorRef, HostListener } fr
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { pedidoService } from '../../Service/pedidoService';
-import { Pedido } from '../../Models/Pedido';
+import { PedidoBodegaDTO } from '../../Models/PedidoBodegaDTO';
 
 @Component({
   selector: 'app-inventario',
@@ -17,7 +17,8 @@ export class InventarioComponent implements OnInit {
 
   // Signals para reactividad en Angular 21 (Zoneless)
   nombreUsuario = signal<string>('Bodega');
-  pedidos = signal<Pedido[]>([]);
+  rolUsuario = signal<string>('Bodega');
+  pedidos = signal<PedidoBodegaDTO[]>([]);
   cargando = signal<boolean>(false);
   errorMensaje = signal<string>('');
   menuAbiertoId = signal<number | null>(null);
@@ -34,6 +35,7 @@ export class InventarioComponent implements OnInit {
       if (sesion) {
         const u = JSON.parse(sesion);
         this.nombreUsuario.set(u.nombre_usuario || 'Bodega');
+        this.rolUsuario.set(u.rol || 'Bodega');
       }
     } catch (e) {
       console.warn('Error leyendo usuario de sesión:', e);
@@ -60,10 +62,11 @@ export class InventarioComponent implements OnInit {
   buscarConfirmados(): void {
     this.cargando.set(true);
     this.errorMensaje.set('');
-
     this.pedidoService.buscarPorEstado("Confirmado").subscribe({
-      next: (data: Pedido[]) => {
-        this.pedidos.set(data);
+
+      next: (data: PedidoBodegaDTO[]) => {
+        const pedidosUnificados = this.unificarPedidos(data);
+        this.pedidos.set(pedidosUnificados);
         this.cargando.set(false);
         this.cdr.markForCheck();
       },
@@ -74,6 +77,37 @@ export class InventarioComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  // Agrupa múltiples productos de un mismo pedido en una sola fila
+  private unificarPedidos(lista: PedidoBodegaDTO[]): PedidoBodegaDTO[] {
+    const mapa = new Map<number, PedidoBodegaDTO>();
+
+    for (const item of lista) {
+      const cant = Number(item.cantidad) || 0;
+      const subtotal = Number(item.total) || 0;
+      const precioFormateado = '$' + Math.round(subtotal).toLocaleString();
+      const textoProducto = `${item.producto} (${cant} ${cant === 1 ? 'unidad' : 'unidades'} - ${precioFormateado})`;
+
+      if (!mapa.has(item.id_pedido)) {
+        mapa.set(item.id_pedido, {
+          ...item,
+          producto: textoProducto,
+          cantidad: cant,
+          total: subtotal
+        });
+      } else {
+        const existente = mapa.get(item.id_pedido)!;
+        // Unimos los productos especificando las unidades y el valor de cada uno
+        existente.producto = `${existente.producto}, ${textoProducto}`;
+        // Sumamos las cantidades totales
+        existente.cantidad += cant;
+        // Sumamos el total general del pedido
+        existente.total += subtotal;
+      }
+    }
+
+    return Array.from(mapa.values());
   }
 
   cambiarEstado(id_pedido: number, nuevoEstado: string): void {

@@ -9,6 +9,9 @@
 .etiqueta-rol{background:#dbeafe;color:#1e40af;font-size:11px;padding:2px 7px;border-radius:10px;font-weight:700}
 .btn-logout{background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
 .btn-logout:hover{background:#dc2626}
+.bloque-izquierdo-encabezado{display:flex;align-items:center;gap:14px}
+.btn-volver-atras{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.btn-volver-atras:hover{background:rgba(255,255,255,.28);transform:translateX(-2px)}
 .contenedor-cuerpo{max-width:1050px;margin:28px auto 0;padding:0 20px}
 .encabezado-seccion{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .titulo-seccion{margin:0;font-size:20px;color:#0f172a;font-weight:700}

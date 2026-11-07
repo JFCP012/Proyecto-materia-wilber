@@ -1,6 +1,9 @@
 .pantalla-vendedor{min-height:100vh;background-color:#f8fafc;width:100%;margin:0;padding:0 0 36px}
 .encabezado-azul{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;width:100%;margin:0;padding:16px 0;box-shadow:0 2px 6px rgba(29,78,216,.2)}
 .contenido-encabezado{max-width:1050px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.bloque-izquierdo-encabezado{display:flex;align-items:center;gap:14px}
+.btn-volver-atras{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.btn-volver-atras:hover{background:rgba(255,255,255,.28);transform:translateX(-2px)}
 .titulo-principal{margin:0;font-size:20px;font-weight:700}
 .subtitulo-principal{font-size:13px;color:#dbeafe;display:block;margin-top:2px}
 .acciones-usuario{display:flex;align-items:center;gap:12px}
@@ -9,6 +12,8 @@
 .etiqueta-rol{background:#dbeafe;color:#1e40af;font-size:11px;padding:2px 7px;border-radius:10px;font-weight:700}
 .btn-logout{background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
 .btn-logout:hover{background:#dc2626}
+.btn-consultar-pedidos{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.btn-consultar-pedidos:hover{background:rgba(255,255,255,.28)}
 .contenedor-cuerpo{max-width:1050px;margin:24px auto 0;padding:0 20px}
 .alerta{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:18px}
 .alerta-exito{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
@@ -16,7 +21,7 @@
 .formulario-panel{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 2px 4px rgba(0,0,0,.03);display:flex;flex-direction:column;gap:22px}
 .seccion-bloque{display:flex;flex-direction:column;gap:12px}
 .titulo-seccion{margin:0;font-size:16px;color:#1e293b;font-weight:700;border-left:4px solid #2563eb;padding-left:10px}
-.grid-cliente{display:grid;grid-template-columns:1.2fr 1.6fr 130px;gap:14px}
+.grid-cliente{display:grid;grid-template-columns:1.2fr 1fr 1.4fr 110px;gap:14px}
 @media(max-width:768px){.grid-cliente{grid-template-columns:1fr}}
 .campo{display:flex;flex-direction:column;gap:5px}
 .campo label{font-size:13px;font-weight:600;color:#475569}

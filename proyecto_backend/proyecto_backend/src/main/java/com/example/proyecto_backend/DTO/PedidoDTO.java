@@ -10,6 +10,7 @@ public class PedidoDTO {
 
     private Long idUsuario;
     private String nombreCliente;
+    private String cedulaCliente;
     private String direccionCliente;
     private List<DetallePedidoDTO> detalles;
 }

@@ -1,0 +1,205 @@
+<div class="pantalla-pedidos">
+  <!-- ENCABEZADO AZUL SUPERIOR -->
+  <header class="encabezado-azul">
+    <div class="contenido-encabezado">
+      <div class="bloque-izquierdo-encabezado">
+        <button type="button" class="btn-volver-atras" (click)="volver()" title="Volver al Panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Volver</span>
+        </button>
+
+        <div class="info-marca">
+          <h1 class="titulo-principal">Distribuidora La Dorada</h1>
+          <span class="subtitulo-principal">Consulta y Seguimiento General de Pedidos</span>
+        </div>
+      </div>
+
+      <div class="acciones-usuario">
+        <div class="chip-usuario">
+          <span class="punto-verde"></span>
+          <span class="nombre-vendedor">{{ nombreUsuario() }}</span>
+          <span class="etiqueta-rol">{{ rolUsuario() }}</span>
+        </div>
+
+        <button type="button" class="btn-logout" (click)="abrirModalLogout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="contenedor-cuerpo">
+    <div class="seccion-tabla-pedidos">
+      
+      <!-- ENCABEZADO DE SECCIÓN -->
+      <div class="encabezado-seccion-monitoreo">
+        <h2 class="titulo-seccion">Monitoreo y Búsqueda de Pedidos</h2>
+        <p class="subtitulo-seccion">Consulta órdenes en tiempo real por estado o datos del cliente</p>
+      </div>
+
+      <!-- PANEL DE BÚSQUEDA POR NOMBRE / CÉDULA -->
+      <div class="panel-busqueda-cliente">
+        <div class="fila-busqueda">
+          <div class="campo-busqueda-item">
+            <label>Nombre del Cliente:</label>
+            <input type="text" [ngModel]="terminoNombre()" (ngModelChange)="terminoNombre.set($event)"
+              (keyup.enter)="buscarPorNombreOCedula()" placeholder="Ej: Juan Cely, Bernardo..." class="input-busqueda" />
+          </div>
+
+          <div class="campo-busqueda-item">
+            <label>Cédula / NIT:</label>
+            <input type="text" [ngModel]="terminoCedula()" (ngModelChange)="terminoCedula.set($event)"
+              (keyup.enter)="buscarPorNombreOCedula()" placeholder="Ej: 1012, 105454..." class="input-busqueda" />
+          </div>
+
+          <div class="acciones-busqueda">
+            <button type="button" class="btn btn-buscar-cliente" (click)="buscarPorNombreOCedula()">
+              Buscar
+            </button>
+            @if (busquedaActiva()) {
+            <button type="button" class="btn btn-limpiar-busqueda" (click)="limpiarBusqueda()">
+              Limpiar Búsqueda
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- BARRA DE FILTROS POR ESTADO -->
+      <div class="barra-filtros-pedidos">
+        <span class="label-filtro">Estado:</span>
+        <div class="grupo-botones-filtros">
+          <button type="button" class="btn-filtro filtro-todos"
+            [class.activo]="estadoActual() === 'Todos' && !busquedaActiva()"
+            (click)="cargarPedidos('Todos')">
+            Todos
+          </button>
+
+          <button type="button" class="btn-filtro filtro-confirmado"
+            [class.activo]="estadoActual() === 'Confirmado' && !busquedaActiva()"
+            (click)="cargarPedidos('Confirmado')">
+            Confirmados
+          </button>
+
+          <button type="button" class="btn-filtro filtro-despachado"
+            [class.activo]="estadoActual() === 'Despachado' && !busquedaActiva()"
+            (click)="cargarPedidos('Despachado')">
+            Despachados
+          </button>
+
+          <button type="button" class="btn-filtro filtro-cancelado"
+            [class.activo]="estadoActual() === 'Cancelado' && !busquedaActiva()"
+            (click)="cargarPedidos('Cancelado')">
+            Cancelados
+          </button>
+
+          <button type="button" class="btn btn-recargar" (click)="cargarPedidos()">
+            Refrescar
+          </button>
+        </div>
+      </div>
+
+      <!-- MENSAJE DE ERROR -->
+      @if (errorMensaje()) {
+      <div class="alerta-error">
+        {{ errorMensaje() }}
+      </div>
+      }
+
+      <!-- TABLA DE PEDIDOS -->
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th style="width: 5%;">ID</th>
+              <th style="width: 13%;">Cliente</th>
+              <th style="width: 9%;">Cédula</th>
+              <th style="width: 14%;">Dirección</th>
+              <th style="width: 10%;">Vendedor</th>
+              <th style="width: 22%;">Producto</th>
+              <th style="width: 7%; text-align: center;">Cantidad</th>
+              <th style="width: 8%; text-align: right;">Total Pedido</th>
+              <th style="width: 6%; text-align: center;">Fecha</th>
+              <th style="width: 6%; text-align: center;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (cargando()) {
+            <tr>
+              <td colspan="10" class="mensaje-tabla">
+                Cargando pedidos...
+              </td>
+            </tr>
+            } @else {
+            @for (ped of pedidos(); track ped.id_pedido) {
+            <tr>
+              <td><strong>#{{ ped.id_pedido }}</strong></td>
+              <td>{{ ped.nombre_cliente || 'Sin cliente' }}</td>
+              <td>{{ ped.cedula_cliente || 'N/A' }}</td>
+              <td class="col-direccion" [title]="ped.direccion_cliente || ''">
+                {{ ped.direccion_cliente || 'Sin dirección' }}
+              </td>
+              <td>
+                <span class="etiqueta-vendedor">{{ ped.nombre_usuario || 'Sin asignar' }}</span>
+              </td>
+              <td>
+                <span class="chip-producto">{{ ped.producto }}</span>
+              </td>
+              <td class="centrado">
+                <span class="badge-cantidad">{{ ped.cantidad }} unid.</span>
+              </td>
+              <td class="derecha texto-total">
+                ${{ ped.total | number:'1.0-0' }}
+              </td>
+              <td class="centrado texto-fecha">
+                {{ ped.fecha_pedido | date:'yyyy-MM-dd' }}
+              </td>
+              <td class="centrado">
+                <span class="badge-estado" [ngClass]="{
+                  'estado-confirmado': ped.estado_pedido.toLowerCase() === 'confirmado',
+                  'estado-despachado': ped.estado_pedido.toLowerCase() === 'despachado',
+                  'estado-cancelado': ped.estado_pedido.toLowerCase() === 'cancelado'
+                }">
+                  {{ ped.estado_pedido }}
+                </span>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="mensaje-tabla">
+                No se encontraron pedidos con los filtros aplicados.
+              </td>
+            </tr>
+            }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL DE LOGOUT -->
+  @if (mostrarModalLogout()) {
+  <div class="modal-overlay" (click)="cerrarModalLogout()">
+    <div class="modal-caja-logout" (click)="$event.stopPropagation()">
+      <h3 class="modal-titulo-logout">¿Cerrar Sesión?</h3>
+      <p class="modal-descripcion-logout">
+        Estás a punto de salir del sistema. ¿Deseas continuar?
+      </p>
+
+      <div class="modal-acciones-logout">
+        <button type="button" class="btn-modal btn-modal-cancelar" (click)="cerrarModalLogout()">
+          Cancelar
+        </button>
+        <button type="button" class="btn-modal btn-modal-confirmar" (click)="confirmarCerrarSesion()">
+          Sí, Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

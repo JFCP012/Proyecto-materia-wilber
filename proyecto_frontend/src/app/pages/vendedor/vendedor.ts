@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,6 +18,7 @@ export interface DetallePedidoDTO {
 export interface PedidoDTO {
   idUsuario: number;
   nombreCliente: string;
+  cedulaCliente?: string;
   direccionCliente: string;
   detalles: DetallePedidoDTO[];
 }
@@ -44,6 +45,7 @@ export class VendedorComponent implements OnInit {
   pedidoDTO: PedidoDTO = {
     idUsuario: null as any,
     nombreCliente: '',
+    cedulaCliente: '',
     direccionCliente: '',
     detalles: [
       { idProducto: 0, nombreProducto: '', cantidad: null as any }
@@ -52,6 +54,8 @@ export class VendedorComponent implements OnInit {
 
   // Datos para visualización en la interfaz:
   nombreUsuario = signal<string>('Vendedor');
+  rolUsuario = signal<string>('Vendedor');
+  esAdmin = computed<boolean>(() => this.rolUsuario().toLowerCase().includes('admin'));
   productos = signal<Producto[]>([]);
   guardando = signal<boolean>(false);
   mensajeExito = signal<string>('');
@@ -72,6 +76,7 @@ export class VendedorComponent implements OnInit {
       const u = JSON.parse(sesion);
       this.pedidoDTO.idUsuario = u.id_usuario || null;
       this.nombreUsuario.set(u.nombre_usuario || 'Vendedor');
+      this.rolUsuario.set(u.rol || 'Vendedor');
     }
   }
 
@@ -166,6 +171,7 @@ export class VendedorComponent implements OnInit {
     const payload = {
       idUsuario: Number(this.pedidoDTO.idUsuario),
       nombreCliente: this.pedidoDTO.nombreCliente.trim(),
+      cedulaCliente: this.pedidoDTO.cedulaCliente ? this.pedidoDTO.cedulaCliente.trim() : '',
       direccionCliente: this.pedidoDTO.direccionCliente.trim(),
       detalles: lineasValidas.map(d => ({
         idProducto: Number(d.idProducto),
@@ -183,6 +189,7 @@ export class VendedorComponent implements OnInit {
         
         // Limpiar formulario tras el éxito
         this.pedidoDTO.nombreCliente = '';
+        this.pedidoDTO.cedulaCliente = '';
         this.pedidoDTO.direccionCliente = '';
         this.pedidoDTO.detalles = [{ idProducto: 0, nombreProducto: '', cantidad: null as any }];
 
@@ -196,6 +203,14 @@ export class VendedorComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  irAPedidos(): void {
+    this.router.navigate(['/pedidos']);
+  }
+
+  volverAAdmin(): void {
+    this.router.navigate(['/admin']);
   }
 
   // ========================================================
