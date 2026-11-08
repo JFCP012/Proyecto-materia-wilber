@@ -49,10 +49,49 @@
         </div>
         <a routerLink="/vendedor" class="btn-modulo btn-verde">Ir a Ventas</a>
       </div>
+
+      <!-- Módulo 3: Consulta de Pedidos -->
+      <div class="tarjeta-modulo">
+        <div>
+          <h3 class="modulo-titulo">Consulta de Pedidos</h3>
+          <p class="modulo-desc">Historial detallado y búsqueda avanzada por cliente y cédula.</p>
+        </div>
+        <a routerLink="/pedidos" class="btn-modulo btn-azul">Ver Pedidos</a>
+      </div>
     </div>
 
     <!-- SECCIÓN 2: MONITOREO GENERAL DE PEDIDOS CON FILTROS -->
     <div class="seccion-tabla-pedidos">
+
+      <!-- PANEL DE BÚSQUEDA POR NOMBRE / CÉDULA -->
+      <div class="panel-busqueda-cliente">
+        <div class="fila-busqueda">
+          <div class="campo-busqueda-item">
+            <label>Nombre del Cliente:</label>
+            <input type="text" [ngModel]="terminoNombre()" (ngModelChange)="terminoNombre.set($event)"
+              (keyup.enter)="buscarPorNombreOCedula()" placeholder="Ej: Juan Cely, Bernardo..."
+              class="input-busqueda" />
+          </div>
+
+          <div class="campo-busqueda-item">
+            <label>Cédula / NIT:</label>
+            <input type="text" [ngModel]="terminoCedula()" (ngModelChange)="terminoCedula.set($event)"
+              (keyup.enter)="buscarPorNombreOCedula()" placeholder="Ej: 1012, 105454..." class="input-busqueda" />
+          </div>
+
+          <div class="acciones-busqueda">
+            <button type="button" class="btn btn-buscar-cliente" (click)="buscarPorNombreOCedula()">
+              Buscar
+            </button>
+            @if (busquedaActiva() || terminoNombre() || terminoCedula()) {
+            <button type="button" class="btn btn-limpiar-busqueda" (click)="limpiarBusqueda()">
+              Limpiar
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+
       <div class="barra-filtros-pedidos">
         <div>
           <h2 class="titulo-seccion">Monitoreo General de Pedidos</h2>
@@ -60,26 +99,22 @@
         </div>
 
         <div class="grupo-botones-filtros">
-          <button type="button" class="btn-filtro filtro-todos"
-            [class.activo]="estadoActual() === 'Todos'"
+          <button type="button" class="btn-filtro filtro-todos" [class.activo]="estadoActual() === 'Todos'"
             (click)="cargarPedidos('Todos')">
             Todos
           </button>
 
-          <button type="button" class="btn-filtro filtro-confirmado"
-            [class.activo]="estadoActual() === 'Confirmado'"
+          <button type="button" class="btn-filtro filtro-confirmado" [class.activo]="estadoActual() === 'Confirmado'"
             (click)="cargarPedidos('Confirmado')">
             Confirmados
           </button>
 
-          <button type="button" class="btn-filtro filtro-despachado"
-            [class.activo]="estadoActual() === 'Despachado'"
+          <button type="button" class="btn-filtro filtro-despachado" [class.activo]="estadoActual() === 'Despachado'"
             (click)="cargarPedidos('Despachado')">
             Despachados
           </button>
 
-          <button type="button" class="btn-filtro filtro-cancelado"
-            [class.activo]="estadoActual() === 'Cancelado'"
+          <button type="button" class="btn-filtro filtro-cancelado" [class.activo]="estadoActual() === 'Cancelado'"
             (click)="cargarPedidos('Cancelado')">
             Cancelados
           </button>
@@ -108,7 +143,8 @@
       <!-- Tarjeta Resumen Total Vendido -->
       <div class="tarjeta-resumen-total">
         <div class="icono-resumen-total">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="1" x2="12" y2="23"></line>
             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
           </svg>
@@ -149,9 +185,9 @@
             <tr>
               <td colspan="10" class="mensaje-tabla">
                 @if (estadoActual() === 'Todos') {
-                  Cargando todos los pedidos...
+                Cargando todos los pedidos...
                 } @else {
-                  Cargando pedidos en estado "{{ estadoActual() }}"...
+                Cargando pedidos en estado "{{ estadoActual() }}"...
                 }
               </td>
             </tr>
@@ -180,8 +216,7 @@
                 {{ ped.fecha_pedido | date:'yyyy-MM-dd' }}
               </td>
               <td class="centrado">
-                <span class="badge-estado"
-                  [class.estado-confirmado]="ped.estado_pedido === 'Confirmado'"
+                <span class="badge-estado" [class.estado-confirmado]="ped.estado_pedido === 'Confirmado'"
                   [class.estado-despachado]="ped.estado_pedido === 'Despachado'"
                   [class.estado-cancelado]="ped.estado_pedido === 'Cancelado'">
                   {{ ped.estado_pedido }}
@@ -192,9 +227,9 @@
             <tr>
               <td colspan="10" class="mensaje-tabla">
                 @if (estadoActual() === 'Todos') {
-                  No se encontraron pedidos registrados en el sistema.
+                No se encontraron pedidos registrados en el sistema.
                 } @else {
-                  No hay pedidos en estado "{{ estadoActual() }}" en este momento.
+                No hay pedidos en estado "{{ estadoActual() }}" en este momento.
                 }
               </td>
             </tr>

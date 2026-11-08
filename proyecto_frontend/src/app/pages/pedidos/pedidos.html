@@ -4,7 +4,8 @@
     <div class="contenido-encabezado">
       <div class="bloque-izquierdo-encabezado">
         <button type="button" class="btn-volver-atras" (click)="volver()" title="Volver al Panel">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
@@ -34,7 +35,7 @@
   <!-- CONTENIDO PRINCIPAL -->
   <main class="contenedor-cuerpo">
     <div class="seccion-tabla-pedidos">
-      
+
       <!-- ENCABEZADO DE SECCIÓN -->
       <div class="encabezado-seccion-monitoreo">
         <h2 class="titulo-seccion">Monitoreo y Búsqueda de Pedidos</h2>
@@ -47,7 +48,8 @@
           <div class="campo-busqueda-item">
             <label>Nombre del Cliente:</label>
             <input type="text" [ngModel]="terminoNombre()" (ngModelChange)="terminoNombre.set($event)"
-              (keyup.enter)="buscarPorNombreOCedula()" placeholder="Ej: Juan Cely, Bernardo..." class="input-busqueda" />
+              (keyup.enter)="buscarPorNombreOCedula()" placeholder="Ej: Juan Cely, Bernardo..."
+              class="input-busqueda" />
           </div>
 
           <div class="campo-busqueda-item">
@@ -62,7 +64,7 @@
             </button>
             @if (busquedaActiva()) {
             <button type="button" class="btn btn-limpiar-busqueda" (click)="limpiarBusqueda()">
-              Limpiar Búsqueda
+              Limpiar
             </button>
             }
           </div>
@@ -74,26 +76,22 @@
         <span class="label-filtro">Estado:</span>
         <div class="grupo-botones-filtros">
           <button type="button" class="btn-filtro filtro-todos"
-            [class.activo]="estadoActual() === 'Todos' && !busquedaActiva()"
-            (click)="cargarPedidos('Todos')">
+            [class.activo]="estadoActual() === 'Todos' && !busquedaActiva()" (click)="cargarPedidos('Todos')">
             Todos
           </button>
 
           <button type="button" class="btn-filtro filtro-confirmado"
-            [class.activo]="estadoActual() === 'Confirmado' && !busquedaActiva()"
-            (click)="cargarPedidos('Confirmado')">
+            [class.activo]="estadoActual() === 'Confirmado' && !busquedaActiva()" (click)="cargarPedidos('Confirmado')">
             Confirmados
           </button>
 
           <button type="button" class="btn-filtro filtro-despachado"
-            [class.activo]="estadoActual() === 'Despachado' && !busquedaActiva()"
-            (click)="cargarPedidos('Despachado')">
+            [class.activo]="estadoActual() === 'Despachado' && !busquedaActiva()" (click)="cargarPedidos('Despachado')">
             Despachados
           </button>
 
           <button type="button" class="btn-filtro filtro-cancelado"
-            [class.activo]="estadoActual() === 'Cancelado' && !busquedaActiva()"
-            (click)="cargarPedidos('Cancelado')">
+            [class.activo]="estadoActual() === 'Cancelado' && !busquedaActiva()" (click)="cargarPedidos('Cancelado')">
             Cancelados
           </button>
 

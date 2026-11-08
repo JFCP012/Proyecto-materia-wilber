@@ -1,12 +1,13 @@
 import { Component, inject, OnInit, signal, computed, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { pedidoService } from '../../Service/pedidoService';
 import { PedidoBodegaDTO } from '../../Models/PedidoBodegaDTO';
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './admin.html',
   styleUrl: './admin.css'
 })
@@ -25,6 +26,11 @@ export class AdminComponent implements OnInit {
   estadoActual = signal<string>('Todos'); // 'Todos' por defecto
   fechaSeleccionada = signal<string>(''); // formato 'YYYY-MM-DD'
   mesSeleccionado = signal<string>('');   // formato 'YYYY-MM'
+
+  // Búsqueda por Cliente y Cédula
+  terminoNombre = signal<string>('');
+  terminoCedula = signal<string>('');
+  busquedaActiva = signal<boolean>(false);
 
   // Total vendido acumulado según los filtros activos (excluyendo cancelados)
   totalVendido = computed<number>(() => {
@@ -91,6 +97,45 @@ export class AdminComponent implements OnInit {
   limpiarFiltroFecha(): void {
     this.fechaSeleccionada.set('');
     this.mesSeleccionado.set('');
+    this.terminoNombre.set('');
+    this.terminoCedula.set('');
+    this.busquedaActiva.set(false);
+    this.cargarPedidos(this.estadoActual());
+  }
+
+  buscarPorNombreOCedula(): void {
+    const nombre = this.terminoNombre().trim();
+    const cedula = this.terminoCedula().trim();
+
+    if (!nombre && !cedula) {
+      this.cargarPedidos(this.estadoActual());
+      return;
+    }
+
+    this.cargando.set(true);
+    this.errorMensaje.set('');
+    this.busquedaActiva.set(true);
+
+    this.pedidoService.filtrarPorNombre(nombre, cedula).subscribe({
+      next: (data: PedidoBodegaDTO[]) => {
+        const pedidosUnificados = this.unificarPedidos(data);
+        this.pedidos.set(pedidosUnificados);
+        this.cargando.set(false);
+        this.cdr.markForCheck();
+      },
+      error: (error: any) => {
+        console.error('Error al buscar por nombre/cédula:', error);
+        this.errorMensaje.set('Error al buscar pedidos por cliente o cédula.');
+        this.cargando.set(false);
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  limpiarBusqueda(): void {
+    this.terminoNombre.set('');
+    this.terminoCedula.set('');
+    this.busquedaActiva.set(false);
     this.cargarPedidos(this.estadoActual());
   }
 
