@@ -612,3 +612,85 @@
 .btn-modal-confirmar:hover {
   background: #dc2626;
 }
+
+/* Panel de Búsqueda por Nombre / Cédula */
+.panel-busqueda-cliente {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.fila-busqueda {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.campo-busqueda-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.campo-busqueda-item label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.input-busqueda {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: border-color 0.15s ease;
+}
+
+.input-busqueda:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.acciones-busqueda {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-buscar-cliente {
+  background: #2563eb;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s ease;
+}
+
+.btn-buscar-cliente:hover {
+  background: #1d4ed8;
+}
+
+.btn-limpiar-busqueda {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-limpiar-busqueda:hover {
+  background: #e2e8f0;
+}
