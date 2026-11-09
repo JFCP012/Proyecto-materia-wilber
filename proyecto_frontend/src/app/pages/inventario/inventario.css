@@ -6,8 +6,10 @@
   padding: 0 0 36px;
   font-family: system-ui, -apple-system, sans-serif;
   color: #1e293b;
+  box-sizing: border-box;
 }
 
+/* ENCABEZADO */
 .encabezado-azul {
   background: linear-gradient(135deg, #1d4ed8, #2563eb);
   color: #fff;
@@ -28,10 +30,15 @@
   gap: 12px;
 }
 
+.info-marca {
+  min-width: 0;
+}
+
 .titulo-principal {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .subtitulo-principal {
@@ -44,7 +51,8 @@
 .acciones-usuario {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .chip-usuario {
@@ -57,11 +65,19 @@
   font-size: 13px;
 }
 
+.nombre-usuario {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
 .punto-verde {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #34d399;
+  flex-shrink: 0;
 }
 
 .etiqueta-rol {
@@ -71,6 +87,7 @@
   padding: 2px 7px;
   border-radius: 10px;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .btn-logout {
@@ -82,6 +99,8 @@
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
 }
 
 .btn-logout:hover {
@@ -107,10 +126,12 @@
   background: rgba(255, 255, 255, 0.28);
 }
 
+/* CONTENEDOR CENTRAL */
 .contenedor-cuerpo {
   max-width: 1280px;
   margin: 28px auto 0;
   padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .barra-acciones-tabla {
@@ -142,6 +163,8 @@
   font-weight: 600;
   cursor: pointer;
   border: none;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
 }
 
 .btn-recargar {
@@ -164,16 +187,20 @@
   margin-bottom: 18px;
 }
 
+/* TABLA RESPONSIVE */
 .tabla-contenedor {
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  overflow: visible;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  width: 100%;
 }
 
 .tabla {
   width: 100%;
+  min-width: 920px;
   border-collapse: collapse;
   font-size: 14px;
 }
@@ -188,6 +215,7 @@
   padding: 12px 14px;
   border-bottom: 2px solid #e2e8f0;
   text-align: left;
+  white-space: nowrap;
 }
 
 .tabla td {
@@ -246,12 +274,14 @@
   padding: 3px 10px;
   border-radius: 12px;
   border: 1px solid #bfdbfe;
+  white-space: nowrap;
 }
 
 .texto-total {
   font-weight: 700;
   color: #0f172a;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .texto-fecha {
@@ -267,6 +297,7 @@
   font-size: 14px;
 }
 
+/* DROPDOWN DE ACCIONES */
 .dropdown-contenedor {
   position: relative;
   display: inline-block;
@@ -275,7 +306,7 @@
 .btn-dropdown {
   background: #2563eb;
   color: #fff;
-  padding: 6px 12px;
+  padding: 7px 12px;
   font-size: 12px;
   font-weight: 600;
   border: none;
@@ -284,6 +315,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
+  min-height: 32px;
 }
 
 .btn-dropdown:hover {
@@ -298,14 +331,14 @@
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  min-width: 130px;
+  min-width: 140px;
   z-index: 50;
   overflow: hidden;
 }
 
 .dropdown-opcion {
   width: 100%;
-  padding: 9px 12px;
+  padding: 10px 14px;
   font-size: 13px;
   font-weight: 600;
   text-align: left;
@@ -313,6 +346,8 @@
   background: transparent;
   cursor: pointer;
   display: block;
+  min-height: 38px;
+  transition: background-color 0.15s ease;
 }
 
 .dropdown-opcion:hover {
@@ -399,6 +434,7 @@
   font-size: 14px;
 }
 
+/* MODAL DE LOGOUT */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -412,6 +448,7 @@
   justify-content: center;
   z-index: 999;
   padding: 16px;
+  box-sizing: border-box;
 }
 
 .modal-caja {
@@ -422,6 +459,7 @@
   width: 100%;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
   animation: modalAnim 0.15s ease-out;
+  box-sizing: border-box;
 }
 
 @keyframes modalAnim {
@@ -456,12 +494,13 @@
 }
 
 .btn-modal {
-  padding: 8px 16px;
+  padding: 9px 16px;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   border: none;
+  min-height: 40px;
 }
 
 .btn-modal-cancelar {
@@ -481,4 +520,76 @@
 
 .btn-modal-confirmar:hover {
   background: #dc2626;
+}
+
+/* ==============================================================
+   MEDIA QUERIES (TABLETS Y MÓVILES)
+   ============================================================== */
+@media (max-width: 768px) {
+  .encabezado-azul {
+    padding: 14px 0;
+  }
+
+  .contenido-encabezado {
+    padding: 0 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .acciones-usuario {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .chip-usuario {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  .nombre-usuario {
+    max-width: 120px;
+  }
+
+  .titulo-principal {
+    font-size: 18px;
+  }
+
+  .subtitulo-principal {
+    font-size: 12px;
+  }
+
+  .contenedor-cuerpo {
+    padding: 0 12px;
+    margin-top: 16px;
+  }
+
+  .barra-acciones-tabla {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn-recargar {
+    width: 100%;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-caja {
+    padding: 20px 16px;
+  }
+
+  .modal-acciones {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-modal {
+    width: 100%;
+  }
 }

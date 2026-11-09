@@ -105,7 +105,7 @@ public class PedidoService {
 
     public List<PedidoBodegaDTO> filtrarPorNombre(String nombre, String cedula) {
         String nombreStr = (nombre != null && !nombre.trim().isEmpty())
-                ? nombre.trim().toLowerCase()
+                ? nombre.trim()
                 : null;
         String cedulaStr = (cedula != null && !cedula.trim().isEmpty())
                 ? cedula.trim()
@@ -114,8 +114,13 @@ public class PedidoService {
         if (nombreStr == null && cedulaStr == null) {
             return this.pedidoRepositorio.buscarSinFecha("Todos");
         }
-
-        return this.pedidoRepositorio.buscarPorNombre(nombreStr, cedulaStr);
+        if (nombreStr != null && cedulaStr != null) {
+            return this.pedidoRepositorio.buscarPorNombreYCedula(nombreStr, cedulaStr);
+        }
+        if (nombreStr != null) {
+            return this.pedidoRepositorio.buscarPorNombreCliente(nombreStr);
+        }
+        return this.pedidoRepositorio.buscarPorCedula(cedulaStr);
     }
 
 }
