@@ -16,6 +16,7 @@
   width: 100%;
   margin: 0;
   padding: 16px 0;
+  padding-top: max(16px, env(safe-area-inset-top));
   box-shadow: 0 2px 6px rgba(29, 78, 216, 0.2);
 }
 
@@ -279,8 +280,10 @@
 }
 
 .tabla {
+  display: table;
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
   font-size: 14px;
 }
 
@@ -650,6 +653,7 @@
 @media (max-width: 768px) {
   .encabezado-azul {
     padding: 14px 0;
+    padding-top: max(12px, env(safe-area-inset-top));
   }
 
   .contenido-encabezado {
@@ -660,8 +664,19 @@
   }
 
   .acciones-usuario {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 8px;
+  }
+
+  .btn-logout {
+    padding: 6px 12px;
+    font-size: 12px;
+    flex-shrink: 0;
+    min-height: 36px;
   }
 
   .contenedor-cuerpo {
@@ -673,6 +688,56 @@
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
+  }
+
+  /* Contenedor padre con scroll horizontal exclusivo */
+  .tabla-contenedor {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    display: block;
+  }
+
+  /* Tabla estrictamente display: table y min-width 750px */
+  .tabla {
+    display: table !important;
+    width: 100% !important;
+    min-width: 750px !important;
+    border-collapse: collapse !important;
+    table-layout: auto !important;
+  }
+
+  .tabla thead {
+    display: table-header-group !important;
+  }
+
+  .tabla tbody {
+    display: table-row-group !important;
+  }
+
+  .tabla tr {
+    display: table-row !important;
+  }
+
+  .tabla th,
+  .tabla td {
+    position: static !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .tabla th.centrado,
+  .tabla td.centrado {
+    text-align: center !important;
+  }
+
+  .tabla th.derecha,
+  .tabla td.derecha {
+    text-align: right !important;
   }
 
   .btn-recargar {
