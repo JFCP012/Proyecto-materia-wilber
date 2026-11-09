@@ -192,12 +192,15 @@
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  overflow: visible;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  width: 100%;
 }
 
 .tabla {
   width: 100%;
+  min-width: 920px;
   border-collapse: collapse;
   font-size: 14px;
 }
@@ -212,6 +215,7 @@
   padding: 12px 14px;
   border-bottom: 2px solid #e2e8f0;
   text-align: left;
+  white-space: nowrap;
 }
 
 .tabla td {
