@@ -39,4 +39,8 @@ export class productoService {
     cambiarEstado(idProducto: number): Observable<Producto> {
         return this.http.put<Producto>(`${this.apiUrl}/CambiarEstado/${idProducto}`, null);
     }
+
+    cambiarStock(id: number, nuevoStock: number): Observable<Producto> {
+        return this.http.patch<Producto>(`${this.apiUrl}/ActualizarStock/${id}`, nuevoStock);
+    }
 }

@@ -173,6 +173,10 @@ export class InventarioComponent implements OnInit {
     });
   }
 
+  irAStock(): void {
+    this.router.navigate(['/stock']);
+  }
+
   irAPedidos(): void {
     this.router.navigate(['/pedidos']);
   }

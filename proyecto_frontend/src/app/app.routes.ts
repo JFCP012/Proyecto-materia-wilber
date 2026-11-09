@@ -5,6 +5,7 @@ import { AdminComponent } from './pages/admin/admin';
 import { VendedorComponent } from './pages/vendedor/vendedor';
 import { InventarioComponent } from './pages/inventario/inventario';
 import { PedidosComponent } from './pages/pedidos/pedidos';
+import { StockComponent } from './pages/stock/stock';
 import { authGuard, publicGuard } from './Guards/auth.guard';
 
 export const routes: Routes = [
@@ -41,6 +42,12 @@ export const routes: Routes = [
   {
     path: 'inventario',
     component: InventarioComponent,
+    canActivate: [authGuard],
+    data: { roles: ['bodega', 'almacen', 'inventario', 'admin'] }
+  },
+  {
+    path: 'stock',
+    component: StockComponent,
     canActivate: [authGuard],
     data: { roles: ['bodega', 'almacen', 'inventario', 'admin'] }
   },
