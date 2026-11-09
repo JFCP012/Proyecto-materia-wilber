@@ -43,14 +43,57 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
                         "WHERE (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado))")
         List<PedidoBodegaDTO> buscarSinFecha(@Param("estado") String estado);
 
-        // 4. Filtrar por nombre o cédula (unificado con OR)
+        // 4. Filtrar por nombre/cédula, estado y día exacto
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
                         "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
-                        "WHERE (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
-                        "OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%'))")
-        List<PedidoBodegaDTO> buscarPorNombreOCedula(@Param("nombre") String nombre, @Param("cedula") String cedula);
+                        "WHERE (" +
+                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
+                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%'))" +
+                        ") " +
+                        "AND (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado)) " +
+                        "AND p.fecha_pedido = :fecha")
+        List<PedidoBodegaDTO> buscarPorNombreOCedulaPorDia(
+                        @Param("nombre") String nombre,
+                        @Param("cedula") String cedula,
+                        @Param("estado") String estado,
+                        @Param("fecha") Date fecha);
+
+        // 5. Filtrar por nombre/cédula, estado y mes/año
+        @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
+                        "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
+                        "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
+                        "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
+                        "WHERE (" +
+                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
+                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%'))" +
+                        ") " +
+                        "AND (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado)) " +
+                        "AND YEAR(p.fecha_pedido) = :anio AND MONTH(p.fecha_pedido) = :mes")
+        List<PedidoBodegaDTO> buscarPorNombreOCedulaPorMes(
+                        @Param("nombre") String nombre,
+                        @Param("cedula") String cedula,
+                        @Param("estado") String estado,
+                        @Param("anio") int anio,
+                        @Param("mes") int mes);
+
+        // 6. Filtrar por nombre/cédula y estado (sin fecha)
+        @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
+                        "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
+                        "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
+                        "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
+                        "WHERE (" +
+                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
+                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%'))" +
+                        ") " +
+                        "AND (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado))")
+        List<PedidoBodegaDTO> buscarPorNombreOCedulaSinFecha(
+                        @Param("nombre") String nombre,
+                        @Param("cedula") String cedula,
+                        @Param("estado") String estado);
 
 }

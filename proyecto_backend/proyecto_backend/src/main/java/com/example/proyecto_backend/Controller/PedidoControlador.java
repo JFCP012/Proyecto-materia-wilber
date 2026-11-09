@@ -63,8 +63,19 @@ public class PedidoControlador {
     @GetMapping("/FiltrarPorNombre")
     public ResponseEntity<List<PedidoBodegaDTO>> filtrarPorNombre(
             @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) String cedula) {
-        return ResponseEntity.ok(this.PedidoService.filtrarPorNombre(nombre, cedula));
+            @RequestParam(required = false) String cedula,
+            @RequestParam(required = false, defaultValue = "Todos") String estado,
+            @RequestParam(required = false) String fecha,
+            @RequestParam(required = false) Integer anio,
+            @RequestParam(required = false) Integer mes) {
+        Date fechaSql = null;
+        if (fecha != null && !fecha.trim().isEmpty()) {
+            try {
+                fechaSql = Date.valueOf(fecha.trim());
+            } catch (Exception ignored) {
+            }
+        }
+        return ResponseEntity.ok(this.PedidoService.filtrarPorNombre(nombre, cedula, estado, fechaSql, anio, mes));
     }
 
 }

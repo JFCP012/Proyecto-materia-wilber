@@ -116,19 +116,25 @@ public class PedidoService {
         return this.pedidoRepositorio.buscarSinFecha(est);
     }
 
-    public List<PedidoBodegaDTO> filtrarPorNombre(String nombre, String cedula) {
+    public List<PedidoBodegaDTO> filtrarPorNombre(String nombre, String cedula, String estado, Date fecha, Integer anio, Integer mes) {
         String nombreStr = (nombre != null && !nombre.trim().isEmpty())
                 ? nombre.trim()
                 : null;
         String cedulaStr = (cedula != null && !cedula.trim().isEmpty())
                 ? cedula.trim()
                 : null;
+        String est = (estado == null || estado.trim().isEmpty()) ? "Todos" : estado;
 
-        if (nombreStr == null && cedulaStr == null) {
-            return this.pedidoRepositorio.buscarSinFecha("Todos");
+        // Caso 1: Si enviaron un DÍA específico
+        if (fecha != null) {
+            return this.pedidoRepositorio.buscarPorNombreOCedulaPorDia(nombreStr, cedulaStr, est, fecha);
         }
-
-        return this.pedidoRepositorio.buscarPorNombreOCedula(nombreStr, cedulaStr);
+        // Caso 2: Si enviaron MES y AÑO
+        if (mes != null && anio != null) {
+            return this.pedidoRepositorio.buscarPorNombreOCedulaPorMes(nombreStr, cedulaStr, est, anio, mes);
+        }
+        // Caso 3: Sin filtro de fecha
+        return this.pedidoRepositorio.buscarPorNombreOCedulaSinFecha(nombreStr, cedulaStr, est);
     }
 
 }

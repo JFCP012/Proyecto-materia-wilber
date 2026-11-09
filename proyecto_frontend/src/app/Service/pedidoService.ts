@@ -16,10 +16,23 @@ export class pedidoService {
         return this.http.get<PedidoBodegaDTO[]>(`${this.apiUrl}/BuscarPedidoEstado?estado=${estado}&fecha=${fecha}&anio=${anio}&mes=${mes}`);
     }
 
-    filtrarPorNombre(nombre: string = '', cedula: string = ''): Observable<PedidoBodegaDTO[]> {
+    filtrarPorNombre(
+        nombre: string = '',
+        cedula: string = '',
+        estado: string = 'Todos',
+        fecha: string = '',
+        anio: string = '',
+        mes: string = ''
+    ): Observable<PedidoBodegaDTO[]> {
         const nom = encodeURIComponent(nombre.trim());
         const ced = encodeURIComponent(cedula.trim());
-        return this.http.get<PedidoBodegaDTO[]>(`${this.apiUrl}/FiltrarPorNombre?nombre=${nom}&cedula=${ced}`);
+        const est = encodeURIComponent(estado || 'Todos');
+        const fec = encodeURIComponent(fecha || '');
+        const a = encodeURIComponent(anio || '');
+        const m = encodeURIComponent(mes || '');
+        return this.http.get<PedidoBodegaDTO[]>(
+            `${this.apiUrl}/FiltrarPorNombre?nombre=${nom}&cedula=${ced}&estado=${est}&fecha=${fec}&anio=${a}&mes=${m}`
+        );
     }
 
     cambiarEstado(id: number, nuevoEstado: string, justificacion: string = ''): Observable<Pedido> {
