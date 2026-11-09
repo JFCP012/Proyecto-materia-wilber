@@ -116,7 +116,8 @@ public class PedidoService {
         return this.pedidoRepositorio.buscarSinFecha(est);
     }
 
-    public List<PedidoBodegaDTO> filtrarPorNombre(String nombre, String cedula, String estado, Date fecha, Integer anio, Integer mes) {
+    public List<PedidoBodegaDTO> filtrarPorNombre(String nombre, String cedula, String estado, Date fecha, Integer anio,
+            Integer mes) {
         String nombreStr = (nombre != null && !nombre.trim().isEmpty())
                 ? nombre.trim()
                 : null;
