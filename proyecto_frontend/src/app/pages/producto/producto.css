@@ -223,6 +223,27 @@
   color: #991b1b;
 }
 
+/* AVISO DE SCROLL EN MÓVILES */
+.aviso-scroll-movil {
+  display: none;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .aviso-scroll-movil {
+    display: flex;
+  }
+}
+
 /* TABLA RESPONSIVE */
 .tabla-responsive {
   background: #fff;
@@ -230,13 +251,15 @@
   border-radius: 10px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   width: 100%;
+  position: relative;
+  padding-bottom: 4px;
 }
 
 .tabla {
   width: 100%;
-  min-width: 680px;
   border-collapse: collapse;
   font-size: 14px;
 }
@@ -649,6 +672,15 @@
   .btn-buscar {
     min-height: 42px;
     padding: 0 16px;
+  }
+
+  .tabla {
+    min-width: 680px;
+  }
+
+  .tabla th:last-child,
+  .tabla td:last-child {
+    padding-right: 28px !important;
   }
 }
 

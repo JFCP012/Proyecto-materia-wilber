@@ -350,6 +350,27 @@
   margin-bottom: 16px;
 }
 
+/* AVISO DE SCROLL EN MÓVILES */
+.aviso-scroll-movil {
+  display: none;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .aviso-scroll-movil {
+    display: flex;
+  }
+}
+
 /* TABLA RESPONSIVE */
 .tabla-contenedor {
   background: #fff;
@@ -357,13 +378,15 @@
   border-radius: 12px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   width: 100%;
+  position: relative;
+  padding-bottom: 4px;
 }
 
 .tabla {
   width: 100%;
-  min-width: 960px;
   border-collapse: collapse;
   font-size: 13px;
 }
@@ -386,6 +409,25 @@
   border-bottom: 1px solid #f1f5f9;
   color: #1e293b;
   vertical-align: middle;
+}
+
+/* Columna de Producto con apilamiento vertical */
+.col-producto {
+  min-width: 190px;
+  max-width: 320px;
+}
+
+.lista-productos-celda {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-producto-linea {
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.35;
+  font-size: 13px;
 }
 
 .tabla tr:last-child td {
@@ -618,6 +660,15 @@
   .contenedor-cuerpo {
     padding: 0 12px;
     margin-top: 16px;
+  }
+
+  .tabla {
+    min-width: 980px;
+  }
+
+  .tabla th:last-child,
+  .tabla td:last-child {
+    padding-right: 28px !important;
   }
 
   .panel-busqueda-cliente {

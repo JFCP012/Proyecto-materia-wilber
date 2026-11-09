@@ -1,16 +1,23 @@
-/* Reset global de márgenes para que los encabezados cubran de borde a borde */
-html, body {
+/* Reset global de márgenes y prevención de bloqueos de scroll en móviles */
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: #f8fafc;
   color: #1e293b;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden;
+  /* Usar clip en vez de hidden para NO crear un contexto de scroll que bloquee el gesto hacia el tope */
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
 }
 
 *, *::before, *::after {
@@ -25,12 +32,13 @@ img, svg {
 
 /* Scrollbars modernos y suaves para tablas y paneles horizontales */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {

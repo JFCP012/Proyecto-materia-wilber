@@ -187,19 +187,44 @@
   margin-bottom: 18px;
 }
 
-/* TABLA */
+/* AVISO DE SCROLL EN MÓVILES */
+.aviso-scroll-movil {
+  display: none;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .aviso-scroll-movil {
+    display: flex;
+  }
+}
+
+/* TABLA RESPONSIVE */
 .tabla-contenedor {
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  overflow: visible;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   width: 100%;
+  position: relative;
+  /* Espacio inferior suficiente para que los menús desplegables no se corten */
+  padding-bottom: 75px;
 }
 
 .tabla {
   width: 100%;
-  min-width: 920px;
   border-collapse: collapse;
   font-size: 14px;
 }
@@ -223,6 +248,25 @@
   color: #1e293b;
   position: relative;
   vertical-align: middle;
+}
+
+/* Columna de Producto con apilamiento vertical */
+.col-producto {
+  min-width: 190px;
+  max-width: 320px;
+}
+
+.lista-productos-celda {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-producto-linea {
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.35;
+  font-size: 13px;
 }
 
 .tabla tr:last-child td {
@@ -300,6 +344,11 @@
 .dropdown-contenedor {
   position: relative;
   display: inline-block;
+  z-index: 10;
+}
+
+.dropdown-contenedor:focus-within {
+  z-index: 100;
 }
 
 .btn-dropdown {
@@ -561,6 +610,15 @@
   .contenedor-cuerpo {
     padding: 0 12px;
     margin-top: 16px;
+  }
+
+  .tabla {
+    min-width: 980px;
+  }
+
+  .tabla th:last-child,
+  .tabla td:last-child {
+    padding-right: 28px !important;
   }
 
   .barra-acciones-tabla {
