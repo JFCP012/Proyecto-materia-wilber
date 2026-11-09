@@ -43,13 +43,32 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
                         "WHERE (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado))")
         List<PedidoBodegaDTO> buscarSinFecha(@Param("estado") String estado);
 
+        // 4. Filtrar por nombre y cédula juntos
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
                         "d.total, p.fecha_pedido, u.nombre_usuario) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
-                        "WHERE (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
-                        "OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) = :cedula)")
-        List<PedidoBodegaDTO> buscarPorNombre(@Param("nombre") String nombre, @Param("cedula") String cedula);
+                        "WHERE LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%')) " +
+                        "OR TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%')")
+        List<PedidoBodegaDTO> buscarPorNombreYCedula(@Param("nombre") String nombre, @Param("cedula") String cedula);
+
+        // 5. Filtrar solo por nombre de cliente
+        @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
+                        "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
+                        "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
+                        "WHERE LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))")
+        List<PedidoBodegaDTO> buscarPorNombreCliente(@Param("nombre") String nombre);
+
+        // 6. Filtrar solo por cédula
+        @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
+                        "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
+                        "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
+                        "WHERE TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%')")
+        List<PedidoBodegaDTO> buscarPorCedula(@Param("cedula") String cedula);
 
 }
