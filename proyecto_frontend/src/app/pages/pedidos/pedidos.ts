@@ -62,6 +62,12 @@ export class PedidosComponent implements OnInit {
 
   cargarPedidos(estado: string = this.estadoActual()): void {
     this.estadoActual.set(estado);
+
+    if (this.busquedaActiva() && (this.terminoNombre().trim() || this.terminoCedula().trim())) {
+      this.buscarPorNombreOCedula();
+      return;
+    }
+
     this.cargando.set(true);
     this.errorMensaje.set('');
 
@@ -94,7 +100,7 @@ export class PedidosComponent implements OnInit {
     this.errorMensaje.set('');
     this.busquedaActiva.set(true);
 
-    this.pedidoService.filtrarPorNombre(nombre, cedula).subscribe({
+    this.pedidoService.filtrarPorNombre(nombre, cedula, this.estadoActual()).subscribe({
       next: (data: PedidoBodegaDTO[]) => {
         const pedidosUnificados = this.unificarPedidos(data);
         this.pedidos.set(pedidosUnificados);

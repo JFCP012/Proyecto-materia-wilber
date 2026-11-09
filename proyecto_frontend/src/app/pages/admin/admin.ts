@@ -116,7 +116,21 @@ export class AdminComponent implements OnInit {
     this.errorMensaje.set('');
     this.busquedaActiva.set(true);
 
-    this.pedidoService.filtrarPorNombre(nombre, cedula).subscribe({
+    let fecha = '';
+    let anio = '';
+    let mes = '';
+
+    if (this.fechaSeleccionada()) {
+      fecha = this.fechaSeleccionada();
+    } else if (this.mesSeleccionado()) {
+      const partes = this.mesSeleccionado().split('-');
+      if (partes.length === 2) {
+        anio = partes[0];
+        mes = String(parseInt(partes[1], 10));
+      }
+    }
+
+    this.pedidoService.filtrarPorNombre(nombre, cedula, this.estadoActual(), fecha, anio, mes).subscribe({
       next: (data: PedidoBodegaDTO[]) => {
         const pedidosUnificados = this.unificarPedidos(data);
         this.pedidos.set(pedidosUnificados);
@@ -141,6 +155,12 @@ export class AdminComponent implements OnInit {
 
   cargarPedidos(estado: string = this.estadoActual()): void {
     this.estadoActual.set(estado);
+
+    if (this.busquedaActiva() && (this.terminoNombre().trim() || this.terminoCedula().trim())) {
+      this.buscarPorNombreOCedula();
+      return;
+    }
+
     this.cargando.set(true);
     this.errorMensaje.set('');
 
