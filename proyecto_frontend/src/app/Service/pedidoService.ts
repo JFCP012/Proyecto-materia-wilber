@@ -22,8 +22,12 @@ export class pedidoService {
         return this.http.get<PedidoBodegaDTO[]>(`${this.apiUrl}/FiltrarPorNombre?nombre=${nom}&cedula=${ced}`);
     }
 
-    cambiarEstado(id: number, nuevoEstado: string): Observable<Pedido> {
-        return this.http.put<Pedido>(`${this.apiUrl}/CambiarEstadoPedido/${id}?nuevoEstado=${nuevoEstado}`, {});
+    cambiarEstado(id: number, nuevoEstado: string, justificacion: string = ''): Observable<Pedido> {
+        let url = `${this.apiUrl}/CambiarEstadoPedido/${id}?nuevoEstado=${encodeURIComponent(nuevoEstado)}`;
+        if (justificacion && justificacion.trim()) {
+            url += `&justificacion=${encodeURIComponent(justificacion.trim())}`;
+        }
+        return this.http.put<Pedido>(url, {});
     }
 
     crearPedido(pedidoDTO: any): Observable<any> {

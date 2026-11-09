@@ -23,4 +23,5 @@ public class PedidoBodegaDTO {
     private BigDecimal total;
     private Date fecha_pedido;
     private String nombre_usuario;
+    private String justificacion;
 }

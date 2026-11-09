@@ -22,6 +22,7 @@ export class ProductoComponent implements OnInit {
   productos = signal<Producto[]>([]);
   cargando = signal<boolean>(false);
   errorMensaje = signal<string>('');
+  ordenAscendenteId = signal<boolean>(true); // Por defecto ordenado de menor a mayor por ID
 
   // Control del modal y modo (crear o editar)
   mostrarModal = signal<boolean>(false);
@@ -56,13 +57,28 @@ export class ProductoComponent implements OnInit {
     this.router.navigate(['/admin']);
   }
 
+  ordenarPorId(lista: Producto[]): Producto[] {
+    const orden = this.ordenAscendenteId() ? 1 : -1;
+    return [...lista].sort((a, b) => {
+      const idA = Number(a.id_producto) || 0;
+      const idB = Number(b.id_producto) || 0;
+      return (idA - idB) * orden;
+    });
+  }
+
+  toggleOrdenId(): void {
+    this.ordenAscendenteId.update((actual) => !actual);
+    this.productos.set(this.ordenarPorId(this.productos()));
+    this.cdr.markForCheck();
+  }
+
   mostrarTodos(): void {
     this.cargando.set(true);
     this.errorMensaje.set('');
 
     this.productoService.buscarTodo().subscribe({
       next: (data) => {
-        this.productos.set(data);
+        this.productos.set(this.ordenarPorId(data));
         this.cargando.set(false);
         this.cdr.markForCheck();
         console.log('Productos cargados:', data);
@@ -87,7 +103,7 @@ export class ProductoComponent implements OnInit {
     this.cargando.set(true);
     this.productoService.buscarPorNombre(nombre).subscribe({
       next: (data) => {
-        this.productos.set(data);
+        this.productos.set(this.ordenarPorId(data));
         this.cargando.set(false);
         this.cdr.markForCheck();
       },

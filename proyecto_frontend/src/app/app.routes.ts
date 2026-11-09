@@ -36,7 +36,7 @@ export const routes: Routes = [
     path: 'pedidos',
     component: PedidosComponent,
     canActivate: [authGuard],
-    data: { roles: ['vendedor', 'admin'] }
+    data: { roles: ['vendedor', 'admin', 'bodega', 'almacen', 'inventario'] }
   },
   {
     path: 'inventario',

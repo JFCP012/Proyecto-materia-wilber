@@ -32,6 +32,9 @@ public class Pedido {
     @Column(name = "estado_pedido", nullable = false)
     private String estado_pedido;
 
+    @Column(name = "justificacion", nullable = true)
+    private String justificacion;
+
     @Column(name = "fecha_pedido", nullable = false)
     private Date fecha_pedido;
 

@@ -21,7 +21,9 @@ export class InventarioComponent implements OnInit {
   pedidos = signal<PedidoBodegaDTO[]>([]);
   cargando = signal<boolean>(false);
   errorMensaje = signal<string>('');
-  menuAbiertoId = signal<number | null>(null);
+  menuGestionarAbiertoId = signal<number | null>(null);
+  menuMotivoAbiertoId = signal<number | null>(null);
+  estadoPendiente = signal<{ [id: number]: string }>({});
   mostrarModalLogout = signal<boolean>(false);
 
   ngOnInit(): void {
@@ -42,21 +44,66 @@ export class InventarioComponent implements OnInit {
     }
   }
 
-  // Cierra el menú desplegable si se hace clic fuera
+  // Cierra los menús desplegables si se hace clic fuera
   @HostListener('document:click')
   cerrarMenus(): void {
-    if (this.menuAbiertoId() !== null) {
-      this.menuAbiertoId.set(null);
+    if (this.menuGestionarAbiertoId() !== null) {
+      this.menuGestionarAbiertoId.set(null);
+    }
+    if (this.menuMotivoAbiertoId() !== null) {
+      this.menuMotivoAbiertoId.set(null);
     }
   }
 
-  toggleMenu(id_pedido: number, event: MouseEvent): void {
+  toggleMenuGestionar(id_pedido: number, event: MouseEvent): void {
     event.stopPropagation();
-    if (this.menuAbiertoId() === id_pedido) {
-      this.menuAbiertoId.set(null);
+    this.menuMotivoAbiertoId.set(null);
+    if (this.menuGestionarAbiertoId() === id_pedido) {
+      this.menuGestionarAbiertoId.set(null);
     } else {
-      this.menuAbiertoId.set(id_pedido);
+      this.menuGestionarAbiertoId.set(id_pedido);
     }
+  }
+
+  toggleMenuMotivo(id_pedido: number, event: MouseEvent): void {
+    event.stopPropagation();
+    if (this.estadoPendiente()[id_pedido] !== 'Cancelado') {
+      return;
+    }
+    this.menuGestionarAbiertoId.set(null);
+    if (this.menuMotivoAbiertoId() === id_pedido) {
+      this.menuMotivoAbiertoId.set(null);
+    } else {
+      this.menuMotivoAbiertoId.set(id_pedido);
+    }
+  }
+
+  seleccionarAccion(id_pedido: number, accion: string, event: MouseEvent): void {
+    event.stopPropagation();
+    this.menuGestionarAbiertoId.set(null);
+
+    if (accion === 'Despachado') {
+      const pendientes = { ...this.estadoPendiente() };
+      delete pendientes[id_pedido];
+      this.estadoPendiente.set(pendientes);
+
+      this.cambiarEstado(id_pedido, 'Despachado', '');
+    } else if (accion === 'Cancelado') {
+      this.estadoPendiente.update((prev) => ({ ...prev, [id_pedido]: 'Cancelado' }));
+      this.menuMotivoAbiertoId.set(id_pedido);
+      this.cdr.markForCheck();
+    }
+  }
+
+  confirmarCancelacionConMotivo(id_pedido: number, motivo: string, event: MouseEvent): void {
+    event.stopPropagation();
+    this.menuMotivoAbiertoId.set(null);
+
+    const pendientes = { ...this.estadoPendiente() };
+    delete pendientes[id_pedido];
+    this.estadoPendiente.set(pendientes);
+
+    this.cambiarEstado(id_pedido, 'Cancelado', motivo);
   }
 
   buscarConfirmados(): void {
@@ -110,19 +157,24 @@ export class InventarioComponent implements OnInit {
     return Array.from(mapa.values());
   }
 
-  cambiarEstado(id_pedido: number, nuevoEstado: string): void {
-    this.menuAbiertoId.set(null);
+  cambiarEstado(id_pedido: number, nuevoEstado: string, justificacion: string = ''): void {
+    this.cerrarMenus();
 
-    this.pedidoService.cambiarEstado(id_pedido, nuevoEstado).subscribe({
+    this.pedidoService.cambiarEstado(id_pedido, nuevoEstado, justificacion).subscribe({
       next: (pedidoActualizado) => {
         console.log(`Pedido #${id_pedido} actualizado a ${nuevoEstado}:`, pedidoActualizado);
         this.buscarConfirmados(); // Recarga la lista para reflejar el cambio
       },
       error: (error: any) => {
         console.error('Error al cambiar estado del pedido:', error);
-        alert(`Error al cambiar el estado a ${nuevoEstado}.`);
+        const msg = error?.error?.message || error?.error || `Error al cambiar el estado a ${nuevoEstado}.`;
+        alert(`Error: ${msg}`);
       }
     });
+  }
+
+  irAPedidos(): void {
+    this.router.navigate(['/pedidos']);
   }
 
   // Control de Sesión y Modal
