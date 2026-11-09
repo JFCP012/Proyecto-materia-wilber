@@ -187,20 +187,47 @@
   margin-bottom: 18px;
 }
 
-/* TABLA */
+/* AVISO DE SCROLL EN MÓVILES */
+.aviso-scroll-movil {
+  display: none;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .aviso-scroll-movil {
+    display: flex;
+  }
+}
+
+/* TABLA RESPONSIVE */
 .tabla-contenedor {
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  overflow: visible;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   width: 100%;
+  position: relative;
+  /* Espacio inferior suficiente para que los menús desplegables no se corten */
+  padding-bottom: 75px;
 }
 
 .tabla {
   width: 100%;
-  min-width: 920px;
-  border-collapse: collapse;
+  min-width: 1120px;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 14px;
 }
 
@@ -223,6 +250,34 @@
   color: #1e293b;
   position: relative;
   vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Columna de ID Sticky para mantener referencia fija en celular */
+.tabla th:first-child,
+.tabla td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: #f8fafc;
+  border-right: 2px solid #e2e8f0;
+  min-width: 65px;
+  text-align: center;
+}
+
+.tabla td:first-child {
+  background: #ffffff;
+}
+
+.tabla tr:hover td:first-child {
+  background: #f8fafc;
+}
+
+/* Última columna con padding derecho generoso para que nunca quede cortada al tope derecho */
+.tabla th:last-child,
+.tabla td:last-child {
+  padding-right: 28px !important;
+  min-width: 140px;
 }
 
 .tabla tr:last-child td {
@@ -300,6 +355,11 @@
 .dropdown-contenedor {
   position: relative;
   display: inline-block;
+  z-index: 10;
+}
+
+.dropdown-contenedor:focus-within {
+  z-index: 100;
 }
 
 .btn-dropdown {
