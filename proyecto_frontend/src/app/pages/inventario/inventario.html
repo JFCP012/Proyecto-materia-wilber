@@ -93,8 +93,12 @@
             <td>
               <span class="etiqueta-vendedor">{{ ped.nombre_usuario || 'Sin asignar' }}</span>
             </td>
-            <td>
-              <span class="chip-producto">{{ ped.producto }}</span>
+            <td class="col-producto">
+              <div class="lista-productos-celda">
+                @for (prodItem of ped.producto.split(', '); track $index) {
+                  <div class="item-producto-linea">{{ prodItem }}</div>
+                }
+              </div>
             </td>
             <td class="centrado">
               <span class="badge-cantidad">{{ ped.cantidad }} unid.</span>

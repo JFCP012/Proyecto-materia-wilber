@@ -387,9 +387,7 @@
 
 .tabla {
   width: 100%;
-  min-width: 1100px;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   font-size: 13px;
 }
 
@@ -411,34 +409,25 @@
   border-bottom: 1px solid #f1f5f9;
   color: #1e293b;
   vertical-align: middle;
-  white-space: nowrap;
 }
 
-/* Columna de ID Sticky para mantener referencia fija en celular */
-.tabla th:first-child,
-.tabla td:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 3;
-  background: #f8fafc;
-  border-right: 2px solid #e2e8f0;
-  min-width: 65px;
-  text-align: center;
+/* Columna de Producto con apilamiento vertical */
+.col-producto {
+  min-width: 190px;
+  max-width: 320px;
 }
 
-.tabla td:first-child {
-  background: #ffffff;
+.lista-productos-celda {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.tabla tr:hover td:first-child {
-  background: #f8fafc;
-}
-
-/* Última columna con padding derecho generoso para que nunca quede cortada al tope derecho */
-.tabla th:last-child,
-.tabla td:last-child {
-  padding-right: 28px !important;
-  min-width: 130px;
+.item-producto-linea {
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.35;
+  font-size: 13px;
 }
 
 .tabla tr:last-child td {
@@ -671,6 +660,15 @@
   .contenedor-cuerpo {
     padding: 0 12px;
     margin-top: 16px;
+  }
+
+  .tabla {
+    min-width: 980px;
+  }
+
+  .tabla th:last-child,
+  .tabla td:last-child {
+    padding-right: 28px !important;
   }
 
   .panel-busqueda-cliente {

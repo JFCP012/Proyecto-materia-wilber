@@ -308,9 +308,7 @@
 
 .tabla-articulos {
   width: 100%;
-  min-width: 680px;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   font-size: 14px;
 }
 
@@ -331,7 +329,6 @@
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
   background: #fff;
-  white-space: nowrap;
 }
 
 .tabla-articulos th:last-child,
@@ -616,6 +613,10 @@
   .cabecera-productos {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .tabla-articulos {
+    min-width: 620px;
   }
 
   .btn-agregar {
