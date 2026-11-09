@@ -16,6 +16,7 @@
   width: 100%;
   margin: 0;
   padding: 16px 0;
+  padding-top: max(16px, env(safe-area-inset-top));
   box-shadow: 0 2px 6px rgba(29, 78, 216, 0.2);
 }
 
@@ -251,16 +252,18 @@
   border-radius: 10px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x pan-y;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   width: 100%;
+  display: block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   position: relative;
   padding-bottom: 4px;
 }
 
 .tabla {
+  display: table;
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
   font-size: 14px;
 }
 
@@ -611,6 +614,7 @@
 @media (max-width: 768px) {
   .encabezado-azul {
     padding: 14px 0;
+    padding-top: max(12px, env(safe-area-inset-top));
   }
 
   .contenido-encabezado {
@@ -621,17 +625,32 @@
   }
 
   .acciones-usuario {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 8px;
   }
 
   .chip-usuario {
-    padding: 5px 12px;
+    padding: 5px 10px;
     font-size: 12px;
+    gap: 6px;
+    flex-shrink: 1;
+    min-width: 0;
   }
 
   .nombre-vendedor {
     max-width: 120px;
+    font-size: 12px;
+  }
+
+  .btn-logout {
+    padding: 6px 12px;
+    font-size: 12px;
+    flex-shrink: 0;
+    min-height: 36px;
   }
 
   .titulo-principal {
@@ -663,24 +682,113 @@
 
   .barra-busqueda {
     max-width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .campo-busqueda {
+    width: 100%;
   }
 
   .campo-busqueda input {
+    width: 100%;
     min-height: 42px;
+    font-size: 14px;
+    box-sizing: border-box;
   }
 
   .btn-buscar {
+    width: 100%;
     min-height: 42px;
-    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
+  .fila-campos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .formulario-modal .campo input,
+  .formulario-modal .campo select {
+    width: 100%;
+    min-height: 42px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .modal-acciones {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .modal-acciones .btn {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .grupo-botones-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* Contenedor padre con scroll horizontal exclusivo */
+  .tabla-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    display: block;
+  }
+
+  /* Tabla estrictamente display: table y min-width 750px */
   .tabla {
-    min-width: 680px;
+    display: table !important;
+    width: 100% !important;
+    min-width: 750px !important;
+    border-collapse: collapse !important;
+    table-layout: auto !important;
   }
 
-  .tabla th:last-child,
-  .tabla td:last-child {
-    padding-right: 28px !important;
+  .tabla thead {
+    display: table-header-group !important;
+  }
+
+  .tabla tbody {
+    display: table-row-group !important;
+  }
+
+  .tabla tr {
+    display: table-row !important;
+  }
+
+  .tabla th,
+  .tabla td {
+    position: static !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .tabla th.centrado,
+  .tabla td.centrado {
+    text-align: center !important;
+  }
+
+  .tabla th.derecha,
+  .tabla td.derecha {
+    text-align: right !important;
   }
 }
 

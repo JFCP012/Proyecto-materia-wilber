@@ -112,11 +112,11 @@
             <thead>
               <tr>
                 <th style="width: 44%;">Producto</th>
-                <th style="width: 14%; text-align: center;">Stock</th>
-                <th style="width: 15%; text-align: right;">Precio Unit.</th>
-                <th style="width: 11%; text-align: center;">Cantidad</th>
-                <th style="width: 16%; text-align: right;">Subtotal</th>
-                <th style="width: 5%; text-align: center;"></th>
+                <th class="centrado" style="width: 14%; text-align: center;">Stock</th>
+                <th class="derecha" style="width: 15%; text-align: right;">Precio Unit.</th>
+                <th class="centrado" style="width: 11%; text-align: center;">Cantidad</th>
+                <th class="derecha" style="width: 16%; text-align: right;">Subtotal</th>
+                <th class="centrado" style="width: 5%; text-align: center;"></th>
               </tr>
             </thead>
             <tbody>
@@ -128,7 +128,7 @@
                     (input)="seleccionarProducto($index)" (change)="seleccionarProducto($index)" autocomplete="off" />
                 </td>
 
-                <td style="text-align: center;">
+                <td class="centrado" style="text-align: center;">
                   @if (obtenerProducto(detalle.idProducto); as prod) {
                     @if (prod.stock < 10) {
                       <span class="chip-stock stock-critico" title="Stock crítico: Re-stock urgente">{{ prod.stock }} unid.</span>
@@ -142,7 +142,7 @@
                   }
                 </td>
 
-                <td style="text-align: right;" class="precio-unit">
+                <td class="derecha precio-unit" style="text-align: right;">
                   @if (obtenerProducto(detalle.idProducto); as prod) {
                   ${{ prod.precio | number:'1.0-0' }}
                   } @else {
@@ -150,7 +150,7 @@
                   }
                 </td>
 
-                <td style="text-align: center;">
+                <td class="centrado" style="text-align: center;">
                   <input type="number" class="control-input cant-input" [(ngModel)]="detalle.cantidad"
                     name="cantidad_{{ $index }}" min="1" placeholder="0"
                     (keydown)="bloquearSignoMenos($event)"
@@ -158,11 +158,11 @@
                     [max]="obtenerProducto(detalle.idProducto)?.stock || 9999" />
                 </td>
 
-                <td style="text-align: right;" class="subtotal-val">
+                <td class="derecha subtotal-val" style="text-align: right;">
                   ${{ calcularSubtotal(detalle) | number:'1.0-0' }}
                 </td>
 
-                <td style="text-align: center;">
+                <td class="centrado" style="text-align: center;">
                   <button type="button" class="btn-eliminar" (click)="eliminarProducto($index)" title="Quitar">
                     ×
                   </button>

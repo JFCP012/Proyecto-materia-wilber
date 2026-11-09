@@ -1,9 +1,10 @@
-/* Reset global de márgenes y prevención de bloqueos de scroll en móviles */
+/* Reset global de márgenes y soporte de safe-area móvil */
 html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   -webkit-text-size-adjust: 100%;
+  background-color: #1d4ed8;
 }
 
 body {
@@ -15,9 +16,28 @@ body {
   color: #1e293b;
   min-height: 100vh;
   width: 100%;
-  /* Usar clip en vez de hidden para NO crear un contexto de scroll que bloquee el gesto hacia el tope */
-  overflow-x: clip;
+  overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Franja superior fija para barra de estado en iOS Safari (Hora, Señal, Batería, Notch) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top, 0px);
+  background-color: #1d4ed8;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Encabezado azul sticky para que el contenido pase por detrás sin sobreponerse */
+.encabezado-azul {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 *, *::before, *::after {
@@ -48,6 +68,20 @@ img, svg {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Asegurar que modales estén por encima de la barra de estado fija */
+.modal-overlay {
+  z-index: 10000 !important;
+}
+
+/* Alineaciones de celdas consistentes entre th y td */
+.centrado {
+  text-align: center !important;
+}
+
+.derecha {
+  text-align: right !important;
 }
 
 /* En pantallas táctiles móviles, asegurar que los inputs no provoquen zoom en iOS */

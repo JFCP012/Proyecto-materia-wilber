@@ -16,6 +16,7 @@
   width: 100%;
   margin: 0;
   padding: 16px 0;
+  padding-top: max(16px, env(safe-area-inset-top));
   box-shadow: 0 2px 6px rgba(29, 78, 216, 0.2);
 }
 
@@ -553,16 +554,18 @@
   border-radius: 12px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x pan-y;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   width: 100%;
+  display: block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   position: relative;
   padding-bottom: 4px;
 }
 
 .tabla {
+  display: table;
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
   font-size: 14px;
 }
 
@@ -814,6 +817,7 @@
 @media (max-width: 768px) {
   .encabezado-azul {
     padding: 14px 0;
+    padding-top: max(12px, env(safe-area-inset-top));
   }
 
   .contenido-encabezado {
@@ -824,17 +828,32 @@
   }
 
   .acciones-usuario {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 8px;
   }
 
   .chip-usuario {
-    padding: 5px 12px;
+    padding: 5px 10px;
     font-size: 12px;
+    gap: 6px;
+    flex-shrink: 1;
+    min-width: 0;
   }
 
   .nombre-vendedor {
     max-width: 120px;
+    font-size: 12px;
+  }
+
+  .btn-logout {
+    padding: 6px 12px;
+    font-size: 12px;
+    flex-shrink: 0;
+    min-height: 36px;
   }
 
   .titulo-principal {
@@ -850,13 +869,54 @@
     margin-top: 16px;
   }
 
-  .tabla {
-    min-width: 980px;
+  /* Contenedor padre con scroll horizontal exclusivo */
+  .tabla-contenedor {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    display: block;
   }
 
-  .tabla th:last-child,
-  .tabla td:last-child {
-    padding-right: 28px !important;
+  /* Tabla estrictamente display: table y min-width 750px */
+  .tabla {
+    display: table !important;
+    width: 100% !important;
+    min-width: 750px !important;
+    border-collapse: collapse !important;
+    table-layout: auto !important;
+  }
+
+  .tabla thead {
+    display: table-header-group !important;
+  }
+
+  .tabla tbody {
+    display: table-row-group !important;
+  }
+
+  .tabla tr {
+    display: table-row !important;
+  }
+
+  .tabla th,
+  .tabla td {
+    position: static !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .tabla th.centrado,
+  .tabla td.centrado {
+    text-align: center !important;
+  }
+
+  .tabla th.derecha,
+  .tabla td.derecha {
+    text-align: right !important;
   }
 
   .grid-modulos {
@@ -874,22 +934,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
   }
 
-  /* Filtros y Búsqueda en Tablet/Móvil */
+  /* Filtros y Búsqueda en Tablet/Móvil a una sola columna */
   .panel-busqueda-cliente {
     padding: 12px 14px;
+    width: 100%;
   }
 
   .fila-busqueda {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
+    width: 100%;
   }
 
   .campo-busqueda-item {
     width: 100%;
     min-width: 0;
+  }
+
+  .campo-busqueda-item input,
+  .input-busqueda {
+    width: 100%;
+    min-height: 42px;
+    font-size: 14px;
+    box-sizing: border-box;
   }
 
   .acciones-busqueda {
@@ -901,6 +973,7 @@
   .btn-buscar-cliente,
   .btn-limpiar-busqueda {
     flex: 1;
+    width: 100%;
     min-height: 42px;
     display: flex;
     align-items: center;
@@ -913,17 +986,19 @@
     gap: 10px;
   }
 
+  /* Botones de filtro de estado envolventes (wrap) */
   .grupo-botones-filtros {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     width: 100%;
-    flex-wrap: nowrap;
+    overflow: visible;
+    padding-bottom: 0;
   }
 
   .btn-filtro {
     flex-shrink: 0;
-    min-height: 38px;
+    min-height: 40px;
   }
 
   .barra-filtros-fechas {
@@ -931,16 +1006,30 @@
     align-items: stretch;
     gap: 10px;
     padding: 12px;
+    width: 100%;
   }
 
   .control-input-fecha {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
   }
 
   .input-fecha {
     flex: 1;
-    max-width: 200px;
+    width: 100%;
+    min-height: 42px;
+    box-sizing: border-box;
+  }
+
+  .btn-filtro-accion,
+  .btn-recargar {
+    min-height: 42px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .tarjeta-resumen-total {
