@@ -17,7 +17,7 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
-                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado)) " +
                         "AND p.fecha_pedido = :fecha")
@@ -27,7 +27,7 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
-                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado)) " +
                         "AND YEAR(p.fecha_pedido) = :anio AND MONTH(p.fecha_pedido) = :mes")
@@ -38,7 +38,7 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
-                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado))")
         List<PedidoBodegaDTO> buscarSinFecha(@Param("estado") String estado);
@@ -47,7 +47,7 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
-                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%')) " +
                         "OR TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%')")
@@ -57,7 +57,7 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
-                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))")
         List<PedidoBodegaDTO> buscarPorNombreCliente(@Param("nombre") String nombre);
@@ -66,7 +66,7 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
         @Query("SELECT new com.example.proyecto_backend.DTO.PedidoBodegaDTO(" +
                         "p.id_pedido, p.nombre_cliente, p.cedula_cliente, p.direccion_cliente, " +
                         "d.producto.nombre_producto, d.cantidad, p.estado_pedido, " +
-                        "d.total, p.fecha_pedido, u.nombre_usuario) " +
+                        "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%')")
         List<PedidoBodegaDTO> buscarPorCedula(@Param("cedula") String cedula);

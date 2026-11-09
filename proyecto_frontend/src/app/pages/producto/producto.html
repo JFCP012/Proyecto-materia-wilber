@@ -67,7 +67,10 @@
       <table class="tabla">
         <thead>
           <tr>
-            <th style="width: 10%;">ID</th>
+            <th class="th-ordenable" style="width: 12%;" (click)="toggleOrdenId()" title="Clic para ordenar por ID (Menor a Mayor / Mayor a Menor)">
+              ID
+              <span class="icono-orden">{{ ordenAscendenteId() ? '▲' : '▼' }}</span>
+            </th>
             <th style="width: 35%;">Nombre</th>
             <th style="width: 15%;">Precio</th>
             <th style="width: 12%;">Stock</th>
@@ -86,7 +89,15 @@
             <td>#{{ prod.id_producto }}</td>
             <td><strong>{{ prod.nombre_producto }}</strong></td>
             <td>{{ prod.precio | currency:'USD' }}</td>
-            <td>{{ prod.stock }}</td>
+            <td>
+              @if (prod.stock < 10) {
+                <span class="badge-stock stock-critico" title="Stock crítico: Re-stock urgente">{{ prod.stock }}</span>
+              } @else if (prod.stock < 50) {
+                <span class="badge-stock stock-alerta" title="Stock bajo: Re-stock recomendado">{{ prod.stock }}</span>
+              } @else {
+                <span>{{ prod.stock }}</span>
+              }
+            </td>
             <td>
               <span class="badge" [class.activo]="prod.estado_producto" [class.inactivo]="!prod.estado_producto">
                 {{ prod.estado_producto ? 'Activo' : 'Inactivo' }}

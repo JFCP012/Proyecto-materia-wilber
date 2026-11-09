@@ -128,9 +128,13 @@
 
                 <td style="text-align: center;">
                   @if (obtenerProducto(detalle.idProducto); as prod) {
-                  <span class="chip-stock" [class.stock-ok]="prod.stock > 0" [class.stock-cero]="prod.stock === 0">
-                    {{ prod.stock }} unid.
-                  </span>
+                    @if (prod.stock < 10) {
+                      <span class="chip-stock stock-critico" title="Stock crítico: Re-stock urgente">{{ prod.stock }} unid.</span>
+                    } @else if (prod.stock < 50) {
+                      <span class="chip-stock stock-alerta" title="Stock bajo: Re-stock recomendado">{{ prod.stock }} unid.</span>
+                    } @else {
+                      <span class="chip-stock stock-ok">{{ prod.stock }} unid.</span>
+                    }
                   } @else {
                   <span class="apagado">—</span>
                   }

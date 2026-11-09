@@ -50,10 +50,13 @@ export class PedidosComponent implements OnInit {
   }
 
   volver(): void {
-    if (this.rolUsuario().toLowerCase().includes('admin')) {
+    const rol = this.rolUsuario().toLowerCase();
+    if (rol.includes('admin')) {
       this.router.navigate(['/admin']);
-    } else {
+    } else if (rol.includes('vendedor')) {
       this.router.navigate(['/vendedor']);
+    } else {
+      this.router.navigate(['/inventario']);
     }
   }
 

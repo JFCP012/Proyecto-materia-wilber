@@ -65,4 +65,10 @@ public class ProductoService {
         return productoRepositorio.save(producto);
     }
 
+    public Producto ActuaizarStock(Long id, Integer nuevoStock) {
+        Producto producto = productoRepositorio.findById(id).orElse(null);
+        producto.setStock(nuevoStock);
+        return productoRepositorio.save(producto);
+    }
+
 }

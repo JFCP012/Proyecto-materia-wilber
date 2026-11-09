@@ -8,6 +8,23 @@
       </div>
 
       <div class="acciones-usuario">
+        <button type="button" class="btn-consultar-pedidos" (click)="irAStock()" title="Ajustar y Gestionar Stock de Productos">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span>Gestionar Stock</span>
+        </button>
+
+        <button type="button" class="btn-consultar-pedidos" (click)="irAPedidos()" title="Ver historial de pedidos">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+          </svg>
+          <span>Ver Pedidos</span>
+        </button>
+
         <div class="chip-usuario">
           <span class="punto-verde"></span>
           <span class="nombre-usuario">{{ nombreUsuario() }}</span>
@@ -45,21 +62,22 @@
         <thead>
           <tr>
             <th style="width: 5%;">ID</th>
-            <th style="width: 13%;">Cliente</th>
-            <th style="width: 9%;">Cédula</th>
-            <th style="width: 14%;">Dirección</th>
-            <th style="width: 10%;">Vendedor</th>
-            <th style="width: 22%;">Producto</th>
-            <th style="width: 7%; text-align: center;">Cantidad</th>
-            <th style="width: 9%; text-align: right;">Total Pedido</th>
+            <th style="width: 12%;">Cliente</th>
+            <th style="width: 8%;">Cédula</th>
+            <th style="width: 12%;">Dirección</th>
+            <th style="width: 9%;">Vendedor</th>
+            <th style="width: 18%;">Producto</th>
+            <th style="width: 6%; text-align: center;">Cantidad</th>
+            <th style="width: 7%; text-align: right;">Total Pedido</th>
             <th style="width: 6%; text-align: center;">Fecha</th>
-            <th style="width: 5%; text-align: center;">Acción</th>
+            <th style="width: 7%; text-align: center;">Justificación</th>
+            <th style="width: 10%; text-align: center;">Acción</th>
           </tr>
         </thead>
         <tbody>
           @if (cargando()) {
           <tr>
-            <td colspan="10" class="mensaje-tabla">Cargando pedidos de bodega...</td>
+            <td colspan="11" class="mensaje-tabla">Cargando pedidos de bodega...</td>
           </tr>
           } @else {
           @for (ped of pedidos(); track ped.id_pedido) {
@@ -86,29 +104,67 @@
               {{ ped.fecha_pedido | date:'yyyy-MM-dd' }}
             </td>
             <td class="centrado">
-              <div class="dropdown-contenedor">
-                <button class="btn-dropdown" (click)="toggleMenu(ped.id_pedido, $event)">
-                  Gestionar <span class="flecha">▾</span>
-                </button>
+              @if (ped.justificacion) {
+              <span class="badge-justificacion">{{ ped.justificacion }}</span>
+              } @else {
+              <span class="texto-apagado">—</span>
+              }
+            </td>
+            <td class="centrado">
+              <div class="contenedor-acciones-bodega">
+                <!-- Botón 1: Gestionar ▾ -->
+                <div class="dropdown-contenedor">
+                  <button type="button" class="btn-dropdown"
+                    [class.btn-cancelado-activo]="estadoPendiente()[ped.id_pedido] === 'Cancelado'"
+                    (click)="toggleMenuGestionar(ped.id_pedido, $event)">
+                    {{ estadoPendiente()[ped.id_pedido] === 'Cancelado' ? 'Cancelado' : 'Gestionar' }}
+                    <span class="flecha">▾</span>
+                  </button>
 
-                @if (menuAbiertoId() === ped.id_pedido) {
-                <div class="dropdown-menu">
-                  <button class="dropdown-opcion opcion-despachar"
-                    (click)="cambiarEstado(ped.id_pedido, 'Despachado')">
-                    Despachado
-                  </button>
-                  <button class="dropdown-opcion opcion-cancelar"
-                    (click)="cambiarEstado(ped.id_pedido, 'Cancelado')">
-                    Cancelado
-                  </button>
+                  @if (menuGestionarAbiertoId() === ped.id_pedido) {
+                  <div class="dropdown-menu">
+                    <button type="button" class="dropdown-opcion opcion-despachar"
+                      (click)="seleccionarAccion(ped.id_pedido, 'Despachado', $event)">
+                      Despachado
+                    </button>
+                    <button type="button" class="dropdown-opcion opcion-cancelar"
+                      (click)="seleccionarAccion(ped.id_pedido, 'Cancelado', $event)">
+                      Cancelado
+                    </button>
+                  </div>
+                  }
                 </div>
-                }
+
+                <!-- Botón 2: Motivo ▾ (desplegable con 'Producto vencido' y 'Producto dañado', solo activo si Cancelado) -->
+                <div class="dropdown-contenedor">
+                  <button type="button" class="btn-dropdown btn-motivo"
+                    [disabled]="estadoPendiente()[ped.id_pedido] !== 'Cancelado'"
+                    [class.btn-motivo-activo]="estadoPendiente()[ped.id_pedido] === 'Cancelado'"
+                    [class.btn-motivo-deshabilitado]="estadoPendiente()[ped.id_pedido] !== 'Cancelado'"
+                    (click)="toggleMenuMotivo(ped.id_pedido, $event)"
+                    [title]="estadoPendiente()[ped.id_pedido] === 'Cancelado' ? 'Selecciona el motivo de cancelación' : 'Primero selecciona Cancelado en Gestionar'">
+                    Motivo <span class="flecha">▾</span>
+                  </button>
+
+                  @if (menuMotivoAbiertoId() === ped.id_pedido) {
+                  <div class="dropdown-menu dropdown-menu-motivos">
+                    <button type="button" class="dropdown-opcion opcion-motivo"
+                      (click)="confirmarCancelacionConMotivo(ped.id_pedido, 'Producto vencido', $event)">
+                      Producto vencido
+                    </button>
+                    <button type="button" class="dropdown-opcion opcion-motivo"
+                      (click)="confirmarCancelacionConMotivo(ped.id_pedido, 'Producto dañado', $event)">
+                      Producto dañado
+                    </button>
+                  </div>
+                  }
+                </div>
               </div>
             </td>
           </tr>
           } @empty {
           <tr>
-            <td colspan="10" class="mensaje-tabla">
+            <td colspan="11" class="mensaje-tabla">
               No hay pedidos pendientes por despachar en este momento.
             </td>
           </tr>

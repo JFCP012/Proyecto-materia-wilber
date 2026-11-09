@@ -63,7 +63,7 @@ public class PedidoService {
         return this.pedidoRepositorio.findById(id_pedido).orElse(null);
     }
 
-    public Pedido cambiarEstadoPedido(Long id_pedido, String nuevoEstado) {
+    public Pedido cambiarEstadoPedido(Long id_pedido, String nuevoEstado, String justificacion) {
         Pedido pedido = this.buscarPorID(id_pedido);
         if (pedido == null) {
             throw new RuntimeException("Pedido no encontrado con ID: " + id_pedido);
@@ -76,6 +76,14 @@ public class PedidoService {
                 || "Cancelado".equalsIgnoreCase(nuevoEstado);
         if (!esEstadoValido) {
             throw new RuntimeException("Estado inválido. Bodega solo puede cambiar a 'Despachado' o 'Cancelado'.");
+        }
+        if ("Cancelado".equalsIgnoreCase(nuevoEstado)) {
+            if (justificacion == null || justificacion.trim().isEmpty()) {
+                throw new RuntimeException("Debe ingresar una justificación para cancelar el pedido.");
+            }
+            pedido.setJustificacion(justificacion.trim());
+        } else {
+            pedido.setJustificacion(null); // Despachado no lleva justificación
         }
         pedido.setEstado_pedido(nuevoEstado);
         return this.pedidoRepositorio.save(pedido);

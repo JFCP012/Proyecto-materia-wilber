@@ -39,8 +39,9 @@ public class PedidoControlador {
     }
 
     @PutMapping("CambiarEstadoPedido/{id}")
-    public ResponseEntity<Pedido> cambiarEstadoPedido(@PathVariable Long id, @RequestParam String nuevoEstado) {
-        return ResponseEntity.ok(this.PedidoService.cambiarEstadoPedido(id, nuevoEstado));
+    public ResponseEntity<Pedido> cambiarEstadoPedido(@PathVariable Long id, @RequestParam String nuevoEstado,
+            @RequestParam(required = false) String justificacion) {
+        return ResponseEntity.ok(this.PedidoService.cambiarEstadoPedido(id, nuevoEstado, justificacion));
     }
 
     @GetMapping("BuscarPedidoEstado")

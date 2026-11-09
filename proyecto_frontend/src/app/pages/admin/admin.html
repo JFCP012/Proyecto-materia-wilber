@@ -49,6 +49,15 @@
         </div>
         <a routerLink="/vendedor" class="btn-modulo btn-verde">Ir a Ventas</a>
       </div>
+
+      <!-- Módulo 3: Control de Stock -->
+      <div class="tarjeta-modulo">
+        <div>
+          <h3 class="modulo-titulo">Control de Stock</h3>
+          <p class="modulo-desc">Ajusta rápidamente las existencias de almacén utilizando el servicio de cambio de stock.</p>
+        </div>
+        <a routerLink="/stock" class="btn-modulo btn-azul">Ir a Stock</a>
+      </div>
     </div>
 
     <!-- SECCIÓN 2: MONITOREO GENERAL DE PEDIDOS CON FILTROS -->
@@ -160,21 +169,22 @@
           <thead>
             <tr>
               <th style="width: 5%;">ID</th>
-              <th style="width: 13%;">Cliente</th>
-              <th style="width: 9%;">Cédula</th>
-              <th style="width: 14%;">Dirección</th>
-              <th style="width: 10%;">Vendedor</th>
-              <th style="width: 22%;">Producto</th>
-              <th style="width: 7%; text-align: center;">Cantidad</th>
-              <th style="width: 8%; text-align: right;">Total Pedido</th>
+              <th style="width: 12%;">Cliente</th>
+              <th style="width: 8%;">Cédula</th>
+              <th style="width: 12%;">Dirección</th>
+              <th style="width: 9%;">Vendedor</th>
+              <th style="width: 18%;">Producto</th>
+              <th style="width: 6%; text-align: center;">Cantidad</th>
+              <th style="width: 7%; text-align: right;">Total Pedido</th>
               <th style="width: 6%; text-align: center;">Fecha</th>
               <th style="width: 6%; text-align: center;">Estado</th>
+              <th style="width: 11%; text-align: center;">Justificación</th>
             </tr>
           </thead>
           <tbody>
             @if (cargando()) {
             <tr>
-              <td colspan="10" class="mensaje-tabla">
+              <td colspan="11" class="mensaje-tabla">
                 @if (estadoActual() === 'Todos') {
                 Cargando todos los pedidos...
                 } @else {
@@ -213,10 +223,17 @@
                   {{ ped.estado_pedido }}
                 </span>
               </td>
+              <td class="centrado">
+                @if (ped.justificacion) {
+                <span class="badge-justificacion">{{ ped.justificacion }}</span>
+                } @else {
+                <span class="texto-apagado">—</span>
+                }
+              </td>
             </tr>
             } @empty {
             <tr>
-              <td colspan="10" class="mensaje-tabla">
+              <td colspan="11" class="mensaje-tabla">
                 @if (estadoActual() === 'Todos') {
                 No se encontraron pedidos registrados en el sistema.
                 } @else {

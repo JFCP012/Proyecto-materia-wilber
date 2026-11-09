@@ -55,4 +55,9 @@ public class ProductoControlador {
         return ResponseEntity.ok(this.productoService.crearProducto(producto));
     }
 
+    @PatchMapping("/ActualizarStock/{id}")
+    public ResponseEntity<Producto> actualizarStock(@PathVariable Long id, @RequestBody Integer nuevoStock) {
+        return ResponseEntity.ok(this.productoService.ActuaizarStock(id, nuevoStock));
+    }
+
 }

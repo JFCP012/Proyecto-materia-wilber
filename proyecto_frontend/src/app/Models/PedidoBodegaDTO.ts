@@ -9,4 +9,5 @@ export interface PedidoBodegaDTO {
     total: number;
     fecha_pedido: string | Date;
     nombre_usuario: string;
+    justificacion?: string;
 }

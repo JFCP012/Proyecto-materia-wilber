@@ -107,6 +107,25 @@
   background: #dc2626;
 }
 
+.btn-consultar-pedidos {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.15s;
+}
+
+.btn-consultar-pedidos:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
 /* CONTENEDOR CENTRAL */
 .contenedor-cuerpo {
   max-width: 1280px;
@@ -168,7 +187,7 @@
   margin-bottom: 18px;
 }
 
-/* TABLA RESPONSIVE */
+/* TABLA */
 .tabla-contenedor {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -349,6 +368,70 @@
 
 .opcion-cancelar:hover {
   background: #fef2f2;
+}
+
+.contenedor-acciones-bodega {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.btn-cancelado-activo {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border-color: #f87171 !important;
+  font-weight: 700;
+}
+
+.btn-motivo-deshabilitado {
+  opacity: 0.45;
+  cursor: not-allowed !important;
+  background: #f1f5f9 !important;
+  color: #94a3b8 !important;
+  border-color: #cbd5e1 !important;
+}
+
+.btn-motivo-activo {
+  background: #fffbeb !important;
+  color: #b45309 !important;
+  border: 1px solid #f59e0b !important;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.dropdown-menu-motivos {
+  min-width: 160px;
+  right: 0;
+  left: auto;
+}
+
+.opcion-motivo {
+  color: #78350f;
+  font-weight: 600;
+}
+
+.opcion-motivo:hover {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-justificacion {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  white-space: nowrap;
+}
+
+.texto-apagado {
+  color: #94a3b8;
+  font-size: 14px;
 }
 
 /* MODAL DE LOGOUT */
