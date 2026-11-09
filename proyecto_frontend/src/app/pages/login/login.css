@@ -7,6 +7,7 @@
   padding: 20px;
   font-family: system-ui, -apple-system, sans-serif;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .login-card {
@@ -16,6 +17,7 @@
   border-radius: 16px;
   padding: 36px 32px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
 }
 
 .login-header {
@@ -34,8 +36,8 @@
   justify-content: center;
 }
 
-.logo-icon {
-  font-size: 32px;
+.logo-circle svg {
+  display: block;
 }
 
 .login-header h2 {
@@ -43,12 +45,14 @@
   font-size: 22px;
   color: #0f172a;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .subtitulo {
   margin: 0;
   font-size: 13px;
   color: #64748b;
+  line-height: 1.4;
 }
 
 .alerta-error {
@@ -82,7 +86,7 @@
 }
 
 .campo input {
-  padding: 11px 14px;
+  padding: 12px 14px;
   border: 1.5px solid #cbd5e1;
   border-radius: 8px;
   font-size: 14px;
@@ -90,6 +94,7 @@
   transition: all 0.2s ease;
   box-sizing: border-box;
   width: 100%;
+  background: #fff;
 }
 
 .campo input:focus {
@@ -104,7 +109,8 @@
 
 .btn-ingresar {
   margin-top: 6px;
-  padding: 12px;
+  padding: 13px;
+  min-height: 48px;
   background: #2563eb;
   color: #ffffff;
   border: none;
@@ -112,15 +118,20 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  width: 100%;
 }
 
 .btn-ingresar:hover:not(:disabled) {
   background: #1d4ed8;
+}
+
+.btn-ingresar:active:not(:disabled) {
+  transform: scale(0.99);
 }
 
 .btn-ingresar:disabled {
@@ -129,8 +140,8 @@
 }
 
 .spinner {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border: 2px solid #ffffff;
   border-bottom-color: transparent;
   border-radius: 50%;
@@ -147,3 +158,47 @@
   }
 }
 
+/* =========================================
+   RESPONSIVE DESIGN (MÓVILES Y TABLETS)
+   ========================================= */
+@media (max-width: 480px) {
+  .login-wrapper {
+    padding: 14px;
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+
+  .login-card {
+    padding: 26px 18px;
+    border-radius: 14px;
+  }
+
+  .login-header h2 {
+    font-size: 20px;
+  }
+
+  .logo-circle {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 10px;
+  }
+
+  .logo-circle svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .subtitulo {
+    font-size: 12px;
+  }
+
+  .campo input {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+
+  .btn-ingresar {
+    font-size: 15px;
+    min-height: 48px;
+  }
+}
