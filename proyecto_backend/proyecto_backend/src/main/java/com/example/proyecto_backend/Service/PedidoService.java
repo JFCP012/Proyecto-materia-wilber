@@ -127,13 +127,8 @@ public class PedidoService {
         if (nombreStr == null && cedulaStr == null) {
             return this.pedidoRepositorio.buscarSinFecha("Todos");
         }
-        if (nombreStr != null && cedulaStr != null) {
-            return this.pedidoRepositorio.buscarPorNombreYCedula(nombreStr, cedulaStr);
-        }
-        if (nombreStr != null) {
-            return this.pedidoRepositorio.buscarPorNombreCliente(nombreStr);
-        }
-        return this.pedidoRepositorio.buscarPorCedula(cedulaStr);
+
+        return this.pedidoRepositorio.buscarPorNombreOCedula(nombreStr, cedulaStr);
     }
 
 }
