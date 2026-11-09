@@ -50,8 +50,8 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
                         "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE (" +
-                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
-                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%'))" +
+                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', CAST(:nombre AS string), '%'))) " +
+                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', CAST(:cedula AS string), '%'))" +
                         ") " +
                         "AND (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado)) " +
                         "AND p.fecha_pedido = :fecha")
@@ -68,8 +68,8 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
                         "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE (" +
-                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
-                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%'))" +
+                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', CAST(:nombre AS string), '%'))) " +
+                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', CAST(:cedula AS string), '%'))" +
                         ") " +
                         "AND (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado)) " +
                         "AND YEAR(p.fecha_pedido) = :anio AND MONTH(p.fecha_pedido) = :mes")
@@ -87,8 +87,8 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
                         "d.total, p.fecha_pedido, u.nombre_usuario, p.justificacion) " +
                         "FROM Detalle_pedido d JOIN d.pedido p JOIN p.usuario u " +
                         "WHERE (" +
-                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
-                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', :cedula, '%'))" +
+                        "   (:nombre IS NOT NULL AND LOWER(TRIM(p.nombre_cliente)) LIKE LOWER(CONCAT('%', CAST(:nombre AS string), '%'))) " +
+                        "   OR (:cedula IS NOT NULL AND TRIM(p.cedula_cliente) LIKE CONCAT('%', CAST(:cedula AS string), '%'))" +
                         ") " +
                         "AND (:estado = 'Todos' OR LOWER(p.estado_pedido) = LOWER(:estado))")
         List<PedidoBodegaDTO> buscarPorNombreOCedulaSinFecha(
