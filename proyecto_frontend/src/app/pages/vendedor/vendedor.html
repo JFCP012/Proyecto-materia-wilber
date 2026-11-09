@@ -151,6 +151,8 @@
                 <td style="text-align: center;">
                   <input type="number" class="control-input cant-input" [(ngModel)]="detalle.cantidad"
                     name="cantidad_{{ $index }}" min="1" placeholder="0"
+                    (keydown)="bloquearSignoMenos($event)"
+                    (input)="validarCantidad(detalle)"
                     [max]="obtenerProducto(detalle.idProducto)?.stock || 9999" />
                 </td>
 

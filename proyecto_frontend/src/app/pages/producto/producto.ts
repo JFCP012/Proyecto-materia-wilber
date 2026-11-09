@@ -167,9 +167,28 @@ export class ProductoComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
+  bloquearSignoMenos(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === 'e' || event.key === '+') {
+      event.preventDefault();
+    }
+  }
+
   // Guarda los cambios (creación o edición)
   guardar(): void {
-    if (!this.nuevoProducto.nombre_producto.trim()) return;
+    if (!this.nuevoProducto.nombre_producto.trim()) {
+      alert('El nombre del producto es obligatorio.');
+      return;
+    }
+
+    if (this.nuevoProducto.precio === null || this.nuevoProducto.precio === undefined || this.nuevoProducto.precio < 0) {
+      alert('El precio del producto no puede ser negativo.');
+      return;
+    }
+
+    if (this.nuevoProducto.stock === null || this.nuevoProducto.stock === undefined || this.nuevoProducto.stock < 0) {
+      alert('El stock del producto no puede ser negativo.');
+      return;
+    }
 
     this.guardando.set(true);
 

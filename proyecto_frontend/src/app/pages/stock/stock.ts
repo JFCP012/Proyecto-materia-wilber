@@ -134,6 +134,12 @@ export class StockComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
+  bloquearSignoMenos(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === 'e' || event.key === '+' || event.key === '.') {
+      event.preventDefault();
+    }
+  }
+
   cerrarModalStock(): void {
     this.mostrarModalStock.set(false);
     this.productoSeleccionado.set(null);

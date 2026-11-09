@@ -27,6 +27,8 @@
           name="id_usuario"
           [(ngModel)]="id_usuario"
           placeholder="Ej: 1"
+          min="1"
+          (keydown)="bloquearSignoMenos($event)"
           required
           [disabled]="cargando()"
         />
