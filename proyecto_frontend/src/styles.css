@@ -1,26 +1,104 @@
-/* Reset global de márgenes y soporte de safe-area móvil */
+/* ==========================================================================
+   DISTRIBUIDORA LA DORADA S.A.S. — DESIGN SYSTEM B2B (Linear / Stripe Style)
+   ========================================================================== */
+
+:root {
+  /* Paleta Base */
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-header: #0f172a;
+  --bg-header-border: #1e293b;
+  --bg-footer: #0b1120;
+  
+  /* Bordes */
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --border-focus: #0f172a;
+
+  /* Tipografía y Textos */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --text-main: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --text-on-dark: #f8fafc;
+
+  /* Acciones & Primarios */
+  --primary-navy: #0f172a;
+  --primary-navy-hover: #1e293b;
+  --primary-blue: #1e3a8a;
+  --primary-blue-hover: #1d4ed8;
+  --accent-emerald: #059669;
+  --accent-emerald-hover: #047857;
+  --accent-emerald-subtle: #ecfdf5;
+
+  /* Estados Semánticos B2B */
+  --state-confirmado-bg: #eff6ff;
+  --state-confirmado-border: #bfdbfe;
+  --state-confirmado-text: #1d4ed8;
+  --state-confirmado-dot: #2563eb;
+
+  --state-despachado-bg: #ecfdf5;
+  --state-despachado-border: #a7f3d0;
+  --state-despachado-text: #047857;
+  --state-despachado-dot: #059669;
+
+  --state-cancelado-bg: #fef2f2;
+  --state-cancelado-border: #fecaca;
+  --state-cancelado-text: #b91c1c;
+  --state-cancelado-dot: #dc2626;
+
+  /* Alertas de Stock */
+  --stock-critico-bg: #fef2f2;
+  --stock-critico-border: #fca5a5;
+  --stock-critico-text: #991b1b;
+  --stock-critico-dot: #ef4444;
+
+  --stock-alerta-bg: #fffbeb;
+  --stock-alerta-border: #fde68a;
+  --stock-alerta-text: #92400e;
+  --stock-alerta-dot: #f59e0b;
+
+  --stock-ok-bg: #f0fdf4;
+  --stock-ok-border: #bbf7d0;
+  --stock-ok-text: #166534;
+  --stock-ok-dot: #10b981;
+
+  /* Radios */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+/* Reset y caja */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   -webkit-text-size-adjust: 100%;
-  background-color: #1d4ed8;
+  background-color: var(--bg-header);
 }
 
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f8fafc;
-  color: #1e293b;
+  font-family: var(--font-family);
+  background-color: var(--bg-app);
+  color: var(--text-body);
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Franja superior fija para barra de estado en iOS Safari (Hora, Señal, Batería, Notch) */
+/* iOS Notch / Status Bar fix */
 body::before {
   content: "";
   position: fixed;
@@ -28,64 +106,759 @@ body::before {
   left: 0;
   right: 0;
   height: env(safe-area-inset-top, 0px);
-  background-color: #1d4ed8;
+  background-color: var(--bg-header);
   z-index: 9999;
   pointer-events: none;
 }
 
-/* Encabezado azul sticky para que el contenido pase por detrás sin sobreponerse */
+/* Formato tabular para números, precios, IDs */
+.tabular-nums,
+.num-tabular,
+.texto-total,
+.precio-unit,
+.subtotal-val,
+.monto-total,
+.badge-cantidad,
+.col-precio,
+.col-stock,
+.col-id {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Scrollbars industriales limpios */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ==========================================================================
+   ESTRUCTURA MAESTRA DE LAYOUT (Flexbox sticky-footer)
+   ========================================================================== */
+.pantalla-admin,
+.pantalla-vendedor,
+.pantalla-pedidos,
+.pantalla-inventario,
+.pantalla-producto,
+.pantalla-stock {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-app);
+}
+
+.contenedor-cuerpo {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px 28px 48px;
+}
+
+/* ==========================================================================
+   NAVBAR SUPERIOR CORPORATIVO (Dark Slate / High Contrast)
+   ========================================================================== */
 .encabezado-azul {
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--bg-header-border);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
+  width: 100%;
 }
 
-*, *::before, *::after {
-  box-sizing: inherit;
+.contenido-encabezado {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-img, svg {
-  max-width: 100%;
-  height: auto;
-  display: block;
+.bloque-izquierdo-encabezado {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-/* Scrollbars modernos y suaves para tablas y paneles horizontales */
-::-webkit-scrollbar {
+/* Marca Corporativa en Header */
+.info-marca {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-principal,
+.brand-name {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.subtitulo-principal,
+.brand-role-desc {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-light);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+/* Acciones de usuario en Navbar */
+.acciones-usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Chip de usuario activo */
+.chip-usuario {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: #f1f5f9;
+}
+
+.punto-verde {
   width: 7px;
   height: 7px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 4px;
+.nombre-vendedor,
+.nombre-usuario {
+  font-weight: 500;
+  color: #f8fafc;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+.etiqueta-rol {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1px 6px;
+  background-color: #0f172a;
+  border: 1px solid #475569;
+  border-radius: var(--radius-sm);
+  color: #94a3b8;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+/* Botones del Header */
+.btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #cbd5e1;
+  background: transparent;
+  border: 1px solid #334155;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-/* Asegurar que modales estén por encima de la barra de estado fija */
-.modal-overlay {
-  z-index: 10000 !important;
+.btn-logout:hover {
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: #475569;
 }
 
-/* Alineaciones de celdas consistentes entre th y td */
-.centrado {
+.btn-volver-atras,
+.btn-consultar-pedidos {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #f1f5f9;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-volver-atras:hover,
+.btn-consultar-pedidos:hover {
+  background-color: #334155;
+  border-color: #475569;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   FOOTER CORPORATIVO OFICIAL B2B
+   ========================================================================== */
+.app-footer {
+  flex-shrink: 0;
+  background-color: var(--bg-footer);
+  border-top: 1px solid #1e293b;
+  color: #94a3b8;
+  font-size: 12px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.footer-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 36px 28px 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.5fr;
+  gap: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-logo-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-brand-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f8fafc;
+  letter-spacing: -0.01em;
+}
+
+.footer-legal-desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #64748b;
+  max-width: 380px;
+}
+
+.footer-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.footer-col-title {
+  margin: 0 0 12px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links-list li {
+  font-size: 12px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-links-list li::before {
+  content: "•";
+  color: #475569;
+}
+
+.footer-status-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: #e2e8f0;
+  width: fit-content;
+}
+
+.status-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+}
+
+.footer-support-text {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.footer-version {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #475569;
+}
+
+.footer-bottom-bar {
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom-bar p {
+  margin: 0;
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   SISTEMA DE BADGES / PÍLDORAS SEMÁNTICAS CON DOT (Sin clichés de IA)
+   ========================================================================== */
+.badge-estado,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge-estado::before,
+.badge::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Estados de Pedidos */
+.estado-confirmado {
+  background-color: var(--state-confirmado-bg) !important;
+  color: var(--state-confirmado-text) !important;
+  border: 1px solid var(--state-confirmado-border);
+}
+.estado-confirmado::before {
+  background-color: var(--state-confirmado-dot);
+}
+
+.estado-despachado {
+  background-color: var(--state-despachado-bg) !important;
+  color: var(--state-despachado-text) !important;
+  border: 1px solid var(--state-despachado-border);
+}
+.estado-despachado::before {
+  background-color: var(--state-despachado-dot);
+}
+
+.estado-cancelado {
+  background-color: var(--state-cancelado-bg) !important;
+  color: var(--state-cancelado-text) !important;
+  border: 1px solid var(--state-cancelado-border);
+}
+.estado-cancelado::before {
+  background-color: var(--state-cancelado-dot);
+}
+
+/* Estados de Producto (Activo / Inactivo) */
+.badge.activo {
+  background-color: var(--state-despachado-bg);
+  color: var(--state-despachado-text);
+  border: 1px solid var(--state-despachado-border);
+}
+.badge.activo::before {
+  background-color: var(--state-despachado-dot);
+}
+
+.badge.inactivo {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid var(--border-subtle);
+}
+.badge.inactivo::before {
+  background-color: #94a3b8;
+}
+
+/* Alertas de Stock */
+.chip-stock,
+.badge-stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.chip-stock::before,
+.badge-stock::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.stock-critico {
+  background-color: var(--stock-critico-bg) !important;
+  color: var(--stock-critico-text) !important;
+  border: 1px solid var(--stock-critico-border);
+}
+.stock-critico::before {
+  background-color: var(--stock-critico-dot);
+}
+
+.stock-alerta {
+  background-color: var(--stock-alerta-bg) !important;
+  color: var(--stock-alerta-text) !important;
+  border: 1px solid var(--stock-alerta-border);
+}
+.stock-alerta::before {
+  background-color: var(--stock-alerta-dot);
+}
+
+.stock-ok,
+.stock-normal {
+  background-color: var(--stock-ok-bg);
+  color: var(--stock-ok-text);
+  border: 1px solid var(--stock-ok-border);
+}
+.stock-ok::before,
+.stock-normal::before {
+  background-color: var(--stock-ok-dot);
+}
+
+/* Badge de justificación */
+.badge-justificacion {
+  display: inline-block;
+  padding: 3px 8px;
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   TABLAS DE DATOS PROFESIONALES B2B
+   ========================================================================== */
+.tabla-contenedor,
+.tabla-responsive {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  box-shadow: none;
+}
+
+.tabla,
+.tabla-articulos {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.tabla thead th,
+.tabla-articulos thead th {
+  background-color: var(--bg-subtle);
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tabla tbody tr,
+.tabla-articulos tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color 0.1s ease;
+}
+
+.tabla tbody tr:last-child,
+.tabla-articulos tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tabla tbody tr:hover,
+.tabla-articulos tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.tabla tbody td,
+.tabla-articulos tbody td {
+  padding: 11px 14px;
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+/* Alineaciones consistentes */
+.centrado,
+.tabla th.centrado,
+.tabla td.centrado {
   text-align: center !important;
 }
 
-.derecha {
+.derecha,
+.tabla th.derecha,
+.tabla td.derecha {
   text-align: right !important;
 }
 
-/* En pantallas táctiles móviles, asegurar que los inputs no provoquen zoom en iOS */
+/* ==========================================================================
+   MODALES CORPORATIVOS B2B
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+  animation: fadeInModal 0.15s ease-out;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-tarjeta,
+.modal-caja,
+.modal-caja-logout {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+  animation: slideUpModal 0.15s ease-out;
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(6px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Modales B2B Estructura Global */
+.modal-cabecera-b2b {
+  padding: 20px 24px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.icono-advertencia-logout {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal-titulo-logout {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.modal-descripcion-logout {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.modal-acciones-logout {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 24px;
+  background-color: var(--bg-subtle);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Botones B2B Globales */
+.btn-b2b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn-b2b-primary {
+  background-color: var(--primary-navy);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-b2b-primary:hover:not(:disabled) {
+  background-color: var(--primary-navy-hover);
+}
+
+.btn-b2b-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-b2b-secondary {
+  background-color: #ffffff;
+  color: var(--text-body);
+  border: 1px solid var(--border-strong);
+}
+
+.btn-b2b-secondary:hover {
+  background-color: #f1f5f9;
+  color: var(--text-main);
+  border-color: #94a3b8;
+}
+
+.btn-b2b-danger {
+  background-color: #dc2626;
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-b2b-danger:hover {
+  background-color: #b91c1c;
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD MÓVIL (≤ 768px)
+   ========================================================================== */
 @media screen and (max-width: 768px) {
+  .contenedor-cuerpo {
+    padding: 16px 14px 36px;
+  }
+
+  .contenido-encabezado {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-container {
+    padding: 24px 14px 16px;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   input[type="text"],
   input[type="number"],
   input[type="password"],
