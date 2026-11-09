@@ -21,8 +21,14 @@ export class LoginComponent {
   cargando = signal<boolean>(false);
   errorMensaje = signal<string>('');
 
+  bloquearSignoMenos(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === 'e' || event.key === '+' || event.key === '.') {
+      event.preventDefault();
+    }
+  }
+
   iniciarSesion(): void {
-    if (!this.id_usuario || !this.password.trim()) {
+    if (!this.id_usuario || this.id_usuario <= 0 || !this.password.trim()) {
       this.errorMensaje.set('Por favor, ingresa tu ID de usuario y contraseña.');
       return;
     }

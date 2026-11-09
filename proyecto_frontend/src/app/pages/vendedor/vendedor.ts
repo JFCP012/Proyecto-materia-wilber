@@ -127,15 +127,32 @@ export class VendedorComponent implements OnInit {
   }
 
   // ========================================================
-  // 6. CÁLCULO DE MONTOS
+  // 6. CÁLCULO DE MONTOS Y VALIDACIÓN
   // ========================================================
+  bloquearSignoMenos(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === 'e' || event.key === '+' || event.key === '.') {
+      event.preventDefault();
+    }
+  }
+
+  validarCantidad(detalle: DetallePedidoDTO): void {
+    if (detalle.cantidad !== null && detalle.cantidad !== undefined) {
+      if (detalle.cantidad < 1) {
+        detalle.cantidad = 1;
+      }
+    }
+    this.cdr.markForCheck();
+  }
+
   calcularSubtotal(detalle: DetallePedidoDTO): number {
     const prod = this.obtenerProducto(detalle.idProducto);
-    return prod && detalle.cantidad ? prod.precio * detalle.cantidad : 0;
+    if (!prod || !detalle.cantidad || detalle.cantidad <= 0) return 0;
+    const precio = Math.max(0, prod.precio || 0);
+    return Math.max(0, precio * detalle.cantidad);
   }
 
   calcularTotal(): number {
-    return this.pedidoDTO.detalles.reduce((total, d) => total + this.calcularSubtotal(d), 0);
+    return Math.max(0, this.pedidoDTO.detalles.reduce((total, d) => total + this.calcularSubtotal(d), 0));
   }
 
   // ========================================================
@@ -151,7 +168,14 @@ export class VendedorComponent implements OnInit {
       return;
     }
 
-    // B. Validar que haya al menos un producto con cantidad
+    // B. Validar que no haya cantidades negativas o menores a 1
+    for (const d of this.pedidoDTO.detalles) {
+      if (d.idProducto > 0 && (d.cantidad == null || d.cantidad <= 0)) {
+        this.mensajeError.set('La cantidad de los productos debe ser mayor a 0 y no puede ser negativa.');
+        return;
+      }
+    }
+
     const lineasValidas = this.pedidoDTO.detalles.filter(d => d.idProducto > 0 && d.cantidad > 0);
     if (lineasValidas.length === 0) {
       this.mensajeError.set('Selecciona al menos un producto válido y su cantidad.');

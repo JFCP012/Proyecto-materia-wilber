@@ -32,6 +32,16 @@ public class PedidoService {
 
     @Transactional
     public Pedido crearPedido(PedidoDTO pedidoDTO) {
+        if (pedidoDTO.getNombreCliente() == null || pedidoDTO.getNombreCliente().trim().isEmpty()) {
+            throw new RuntimeException("El nombre del cliente es obligatorio.");
+        }
+        if (pedidoDTO.getDireccionCliente() == null || pedidoDTO.getDireccionCliente().trim().isEmpty()) {
+            throw new RuntimeException("La dirección del cliente es obligatoria.");
+        }
+        if (pedidoDTO.getDetalles() == null || pedidoDTO.getDetalles().isEmpty()) {
+            throw new RuntimeException("El pedido debe contener al menos un producto.");
+        }
+
         // 1. Armamos la entidad Pedido (cabecera)
         Pedido pedido = new Pedido();
         pedido.setFecha_pedido(Date.valueOf(LocalDate.now()));
@@ -63,6 +73,7 @@ public class PedidoService {
         return this.pedidoRepositorio.findById(id_pedido).orElse(null);
     }
 
+    @Transactional
     public Pedido cambiarEstadoPedido(Long id_pedido, String nuevoEstado, String justificacion) {
         Pedido pedido = this.buscarPorID(id_pedido);
         if (pedido == null) {
@@ -82,6 +93,8 @@ public class PedidoService {
                 throw new RuntimeException("Debe ingresar una justificación para cancelar el pedido.");
             }
             pedido.setJustificacion(justificacion.trim());
+            // Restituir existencias al inventario según RF-05
+            this.detallePedidoService.restituirStockPorPedido(id_pedido);
         } else {
             pedido.setJustificacion(null); // Despachado no lleva justificación
         }

@@ -161,6 +161,7 @@
               step="1"
               [(ngModel)]="nuevoStock"
               placeholder="Ingresa la cantidad..."
+              (keydown)="bloquearSignoMenos($event)"
               (keyup.enter)="guardarStock()"
             />
           </div>
