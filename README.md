@@ -7,7 +7,7 @@ Sistema web integral para el control de inventarios, generación de pedidos de v
 ##  Información del Repositorio
 
 * **URL del Repositorio:** [https://github.com/JFCP012/Proyecto-materia-wilber.git](https://github.com/JFCP012/Proyecto-materia-wilber.git)
-* **Rama Principal de Trabajo:** `Jaider`
+* **Rama Principal de Trabajo:** `MAIN`
 
 ---
 
