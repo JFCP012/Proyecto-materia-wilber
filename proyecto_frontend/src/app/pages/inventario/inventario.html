@@ -70,8 +70,8 @@
             <th style="width: 6%; text-align: center;">Cantidad</th>
             <th style="width: 7%; text-align: right;">Total Pedido</th>
             <th style="width: 6%; text-align: center;">Fecha</th>
-            <th style="width: 7%; text-align: center;">Justificación</th>
-            <th style="width: 10%; text-align: center;">Acción</th>
+            <th style="width: 8%; text-align: center;">Acción</th>
+            <th style="width: 9%; text-align: center;">Justificación</th>
           </tr>
         </thead>
         <tbody>
@@ -104,62 +104,58 @@
               {{ ped.fecha_pedido | date:'yyyy-MM-dd' }}
             </td>
             <td class="centrado">
+              <!-- Botón 1: Gestionar ▾ (debajo de Acción) -->
+              <div class="dropdown-contenedor">
+                <button type="button" class="btn-dropdown"
+                  [class.btn-cancelado-activo]="estadoPendiente()[ped.id_pedido] === 'Cancelado'"
+                  (click)="toggleMenuGestionar(ped.id_pedido, $event)">
+                  {{ estadoPendiente()[ped.id_pedido] === 'Cancelado' ? 'Cancelado' : 'Gestionar' }}
+                  <span class="flecha">▾</span>
+                </button>
+
+                @if (menuGestionarAbiertoId() === ped.id_pedido) {
+                <div class="dropdown-menu">
+                  <button type="button" class="dropdown-opcion opcion-despachar"
+                    (click)="seleccionarAccion(ped.id_pedido, 'Despachado', $event)">
+                    Despachado
+                  </button>
+                  <button type="button" class="dropdown-opcion opcion-cancelar"
+                    (click)="seleccionarAccion(ped.id_pedido, 'Cancelado', $event)">
+                    Cancelado
+                  </button>
+                </div>
+                }
+              </div>
+            </td>
+            <td class="centrado">
+              <!-- Botón 2: Motivo ▾ (debajo de Justificación) -->
               @if (ped.justificacion) {
               <span class="badge-justificacion">{{ ped.justificacion }}</span>
               } @else {
-              <span class="texto-apagado">—</span>
-              }
-            </td>
-            <td class="centrado">
-              <div class="contenedor-acciones-bodega">
-                <!-- Botón 1: Gestionar ▾ -->
-                <div class="dropdown-contenedor">
-                  <button type="button" class="btn-dropdown"
-                    [class.btn-cancelado-activo]="estadoPendiente()[ped.id_pedido] === 'Cancelado'"
-                    (click)="toggleMenuGestionar(ped.id_pedido, $event)">
-                    {{ estadoPendiente()[ped.id_pedido] === 'Cancelado' ? 'Cancelado' : 'Gestionar' }}
-                    <span class="flecha">▾</span>
+              <div class="dropdown-contenedor">
+                <button type="button" class="btn-dropdown btn-motivo"
+                  [disabled]="estadoPendiente()[ped.id_pedido] !== 'Cancelado'"
+                  [class.btn-motivo-activo]="estadoPendiente()[ped.id_pedido] === 'Cancelado'"
+                  [class.btn-motivo-deshabilitado]="estadoPendiente()[ped.id_pedido] !== 'Cancelado'"
+                  (click)="toggleMenuMotivo(ped.id_pedido, $event)"
+                  [title]="estadoPendiente()[ped.id_pedido] === 'Cancelado' ? 'Selecciona el motivo de cancelación' : 'Primero selecciona Cancelado en Gestionar'">
+                  Motivo <span class="flecha">▾</span>
+                </button>
+
+                @if (menuMotivoAbiertoId() === ped.id_pedido) {
+                <div class="dropdown-menu dropdown-menu-motivos">
+                  <button type="button" class="dropdown-opcion opcion-motivo"
+                    (click)="confirmarCancelacionConMotivo(ped.id_pedido, 'Producto vencido', $event)">
+                    Producto vencido
                   </button>
-
-                  @if (menuGestionarAbiertoId() === ped.id_pedido) {
-                  <div class="dropdown-menu">
-                    <button type="button" class="dropdown-opcion opcion-despachar"
-                      (click)="seleccionarAccion(ped.id_pedido, 'Despachado', $event)">
-                      Despachado
-                    </button>
-                    <button type="button" class="dropdown-opcion opcion-cancelar"
-                      (click)="seleccionarAccion(ped.id_pedido, 'Cancelado', $event)">
-                      Cancelado
-                    </button>
-                  </div>
-                  }
-                </div>
-
-                <!-- Botón 2: Motivo ▾ (desplegable con 'Producto vencido' y 'Producto dañado', solo activo si Cancelado) -->
-                <div class="dropdown-contenedor">
-                  <button type="button" class="btn-dropdown btn-motivo"
-                    [disabled]="estadoPendiente()[ped.id_pedido] !== 'Cancelado'"
-                    [class.btn-motivo-activo]="estadoPendiente()[ped.id_pedido] === 'Cancelado'"
-                    [class.btn-motivo-deshabilitado]="estadoPendiente()[ped.id_pedido] !== 'Cancelado'"
-                    (click)="toggleMenuMotivo(ped.id_pedido, $event)"
-                    [title]="estadoPendiente()[ped.id_pedido] === 'Cancelado' ? 'Selecciona el motivo de cancelación' : 'Primero selecciona Cancelado en Gestionar'">
-                    Motivo <span class="flecha">▾</span>
+                  <button type="button" class="dropdown-opcion opcion-motivo"
+                    (click)="confirmarCancelacionConMotivo(ped.id_pedido, 'Producto dañado', $event)">
+                    Producto dañado
                   </button>
-
-                  @if (menuMotivoAbiertoId() === ped.id_pedido) {
-                  <div class="dropdown-menu dropdown-menu-motivos">
-                    <button type="button" class="dropdown-opcion opcion-motivo"
-                      (click)="confirmarCancelacionConMotivo(ped.id_pedido, 'Producto vencido', $event)">
-                      Producto vencido
-                    </button>
-                    <button type="button" class="dropdown-opcion opcion-motivo"
-                      (click)="confirmarCancelacionConMotivo(ped.id_pedido, 'Producto dañado', $event)">
-                      Producto dañado
-                    </button>
-                  </div>
-                  }
                 </div>
+                }
               </div>
+              }
             </td>
           </tr>
           } @empty {

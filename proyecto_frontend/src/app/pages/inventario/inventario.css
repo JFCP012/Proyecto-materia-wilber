@@ -3,7 +3,7 @@
   background-color: #f8fafc;
   width: 100%;
   margin: 0;
-  padding: 0 0 36px;
+  padding: 0 0 80px;
   font-family: system-ui, -apple-system, sans-serif;
   color: #1e293b;
   box-sizing: border-box;
@@ -192,8 +192,7 @@
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   width: 100%;
 }
