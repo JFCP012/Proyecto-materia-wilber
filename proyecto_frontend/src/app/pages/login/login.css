@@ -1,204 +1,367 @@
-.login-wrapper {
+/* ==========================================================================
+   LOGIN CORPORATIVO — ESTILO B2B LINEAR / STRIPE
+   ========================================================================== */
+
+.login-layout {
+  display: flex;
   min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-surface);
+}
+
+/* --------------------------------------------------------------------------
+   PANEL IZQUIERDO INSTITUCIONAL (Oscuro #0F172A)
+   -------------------------------------------------------------------------- */
+.panel-institucional {
+  flex: 1 1 50%;
+  background-color: #0f172a;
+  color: #f8fafc;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 56px;
+  border-right: 1px solid #1e293b;
+}
+
+.patron-fondo-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.contenido-institucional {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* Marca en Login */
+.bloque-marca-login {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.isotipo-login {
+  flex-shrink: 0;
+}
+
+.textos-marca-login {
+  display: flex;
+  flex-direction: column;
+}
+
+.marca-nombre {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.marca-subtitulo {
+  font-size: 11px;
+  font-weight: 600;
+  color: #38bdf8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Pitch de la plataforma */
+.bloque-pitch {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 520px;
+}
+
+.pill-contexto {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background-color: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: var(--radius-sm);
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+.pitch-titulo {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.pitch-descripcion {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+/* Pie institucional */
+.panel-institucional-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #1e293b;
+  padding-top: 16px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.version-tag {
+  font-family: var(--font-mono);
+}
+
+/* --------------------------------------------------------------------------
+   PANEL DERECHO (Formulario de Acceso)
+   -------------------------------------------------------------------------- */
+.panel-formulario {
+  flex: 1 1 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-  padding: 20px;
-  font-family: system-ui, -apple-system, sans-serif;
-  box-sizing: border-box;
-  width: 100%;
+  padding: 48px 32px;
+  background-color: var(--bg-app);
 }
 
-.login-card {
+.caja-formulario {
   width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border-radius: 16px;
+  max-width: 400px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
   padding: 36px 32px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.login-header {
-  text-align: center;
+.cabecera-acceso {
   margin-bottom: 24px;
 }
 
-.logo-circle {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 12px;
-  background: #eff6ff;
-  border-radius: 50%;
-  display: flex;
+.logo-movil {
+  display: none;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.logo-circle svg {
+.logo-movil-textos strong {
   display: block;
+  font-size: 16px;
+  color: var(--text-main);
+  line-height: 1.2;
 }
 
-.login-header h2 {
-  margin: 0 0 6px;
-  font-size: 22px;
-  color: #0f172a;
-  font-weight: 700;
-  line-height: 1.25;
+.logo-movil-textos span {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
 }
 
-.subtitulo {
+.titulo-acceso {
   margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.subtitulo-acceso {
+  margin: 6px 0 0 0;
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
+/* Alerta de Error */
 .alerta-error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  margin-bottom: 18px;
   display: flex;
   align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--state-cancelado-bg);
+  border: 1px solid var(--state-cancelado-border);
+  border-radius: var(--radius-md);
+  color: var(--state-cancelado-text);
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 20px;
 }
 
-.login-form {
+.alerta-icono {
+  flex-shrink: 0;
+  color: var(--state-cancelado-dot);
+}
+
+/* Formulario */
+.form-login {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.campo {
+.campo-grupo {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.campo label {
-  font-size: 13px;
+.campo-label {
+  font-size: 12px;
   font-weight: 600;
-  color: #334155;
+  color: var(--text-body);
 }
 
-.campo input {
-  padding: 12px 14px;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
+.input-contenedor {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icono {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.campo-input {
   width: 100%;
-  background: #fff;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-main);
+  background-color: #ffffff;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: all 0.15s ease;
 }
 
-.campo input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+.campo-input.input-con-icono {
+  padding-left: 36px;
 }
 
-.campo input:disabled {
-  background: #f1f5f9;
+.campo-input:focus {
+  border-color: var(--primary-navy);
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+.campo-input:disabled {
+  background-color: var(--bg-subtle);
+  color: var(--text-muted);
   cursor: not-allowed;
 }
 
+.campo-pista {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Botón Ingresar */
 .btn-ingresar {
-  margin-top: 6px;
-  padding: 13px;
-  min-height: 48px;
-  background: #2563eb;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
+  height: 42px;
+  background-color: var(--primary-navy);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  margin-top: 6px;
+  transition: all 0.15s ease;
 }
 
 .btn-ingresar:hover:not(:disabled) {
-  background: #1d4ed8;
-}
-
-.btn-ingresar:active:not(:disabled) {
-  transform: scale(0.99);
+  background-color: var(--primary-navy-hover);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-ingresar:disabled {
-  background: #94a3b8;
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
-.spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #ffffff;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  animation: rotation 1s linear infinite;
+.spinner-svg {
+  display: inline-flex;
+  animation: spin 1s linear infinite;
 }
 
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* =========================================
-   RESPONSIVE DESIGN (MÓVILES Y TABLETS)
-   ========================================= */
-@media (max-width: 480px) {
-  .login-wrapper {
-    padding: 14px;
-    align-items: flex-start;
-    padding-top: 30px;
+/* Pie login */
+.pie-login {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.pie-login p {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.legal-mini {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-light);
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVIDAD MÓVIL (≤ 1023px)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 1023px) {
+  .panel-institucional {
+    display: none;
   }
 
-  .login-card {
-    padding: 26px 18px;
-    border-radius: 14px;
+  .panel-formulario {
+    flex: 1 1 100%;
+    padding: 24px 16px;
   }
 
-  .login-header h2 {
-    font-size: 20px;
-  }
-
-  .logo-circle {
-    width: 52px;
-    height: 52px;
-    margin-bottom: 10px;
-  }
-
-  .logo-circle svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .subtitulo {
-    font-size: 12px;
-  }
-
-  .campo input {
-    padding: 12px 14px;
-    font-size: 16px;
-  }
-
-  .btn-ingresar {
-    font-size: 15px;
-    min-height: 48px;
+  .logo-movil {
+    display: flex;
   }
 }

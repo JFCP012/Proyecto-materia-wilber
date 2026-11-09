@@ -1,19 +1,34 @@
 <div class="pantalla-stock">
-  <!-- ENCABEZADO AZUL COMPLETO DE BORDE A BORDE -->
+  <!-- NAVBAR SUPERIOR CORPORATIVO B2B -->
   <header class="encabezado-azul">
     <div class="contenido-encabezado">
       <div class="bloque-izquierdo-encabezado">
         <button type="button" class="btn-volver-atras" (click)="volver()" title="Volver al panel principal">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
           <span>Volver</span>
         </button>
 
-        <div class="info-marca">
-          <h1 class="titulo-principal">Distribuidora La Dorada</h1>
-          <span class="subtitulo-principal">Control y Ajuste Rápido de Stock</span>
+        <div class="brand-wrapper">
+          <div class="brand-icon">
+            <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="40" height="40" rx="8" fill="#1E293B" />
+              <path d="M20 7L31 13.5V26.5L20 33L9 26.5V13.5L20 7Z" stroke="#38BDF8" stroke-width="1.75"
+                stroke-linejoin="round" />
+              <path d="M20 7V20M20 20L31 13.5M20 20L9 13.5" stroke="#38BDF8" stroke-width="1.75"
+                stroke-linejoin="round" />
+              <path d="M20 20V33M20 20L31 26.5M20 20L9 26.5" stroke="#0F172A" stroke-width="1.75" />
+              <path d="M20 14L25 17L20 20L15 17L20 14Z" fill="#059669" />
+              <circle cx="20" cy="14" r="2" fill="#34D399" />
+            </svg>
+          </div>
+          <div class="brand-details">
+            <h1 class="brand-name">Distribuidora La Dorada</h1>
+            <span class="brand-role-desc">Ajuste de Inventario Físico · Almacén</span>
+          </div>
         </div>
       </div>
 
@@ -24,8 +39,14 @@
           <span class="etiqueta-rol">{{ rolUsuario() }}</span>
         </div>
 
-        <button type="button" class="btn-logout" (click)="abrirModalLogout()">
-          Cerrar Sesión
+        <button type="button" class="btn-logout" (click)="abrirModalLogout()" title="Cerrar sesión">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Salir</span>
         </button>
       </div>
     </div>
@@ -33,172 +54,302 @@
 
   <!-- CONTENIDO CENTRAL -->
   <main class="contenedor-cuerpo">
-    <div class="encabezado-seccion">
-      <div>
-        <h2 class="titulo-seccion">Gestión de Stock de Productos</h2>
-        <p class="subtitulo-seccion">Actualiza las existencias disponibles en almacén de forma directa</p>
+    <div class="seccion-stock-b2b">
+      <!-- CABECERA Y RECARGA -->
+      <div class="cabecera-panel-stock">
+        <div>
+          <h2 class="titulo-seccion-b2b">Ajuste Directo de Existencias</h2>
+          <p class="subtitulo-seccion-b2b">Actualización de conteo físico en bodega central sin alterar precios ni
+            configuración</p>
+        </div>
+
+        <button type="button" class="btn-b2b-tag btn-tag-reload" (click)="mostrarTodos()" [disabled]="cargando()"
+          title="Refrescar lista de stock">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>Refrescar Lista</span>
+        </button>
       </div>
-      <button class="btn btn-recargar" (click)="mostrarTodos()" [disabled]="cargando()">
-        Refrescar Lista
-      </button>
-    </div>
 
-    <!-- Buscador por nombre -->
-    <div class="barra-busqueda">
-      <div class="campo-busqueda">
-        <input type="text" placeholder="Buscar por nombre de producto..." [(ngModel)]="terminoBusqueda"
-          (ngModelChange)="buscarPorNombre()" (keyup.enter)="buscarPorNombre()" />
-        @if (terminoBusqueda) {
-        <button class="btn-limpiar" (click)="limpiarBusqueda()" title="Limpiar búsqueda">✕</button>
-        }
+      <!-- BARRA DE BÚSQUEDA -->
+      <div class="barra-busqueda-b2b">
+        <div class="campo-busqueda-grow">
+          <svg class="icono-busqueda-input" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="Buscar por nombre de producto..." [(ngModel)]="terminoBusqueda"
+            (ngModelChange)="buscarPorNombre()" (keyup.enter)="buscarPorNombre()" class="input-busqueda-catalogo" />
+          @if (terminoBusqueda) {
+          <button type="button" class="btn-clear-busqueda" (click)="limpiarBusqueda()"
+            title="Limpiar búsqueda">✕</button>
+          }
+        </div>
+        <button type="button" class="btn-b2b btn-b2b-secondary" (click)="buscarPorNombre()">
+          Buscar
+        </button>
       </div>
-      <button class="btn btn-buscar" (click)="buscarPorNombre()">
-        Buscar
-      </button>
-    </div>
 
-    <!-- Mensajes de feedback -->
-    @if (mensajeExito()) {
-    <div class="alerta alerta-exito">
-      ✓ {{ mensajeExito() }}
-    </div>
-    }
+      <!-- Mensajes de feedback -->
+      @if (mensajeExito()) {
+      <div class="alerta-feedback alerta-feedback-exito">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span>{{ mensajeExito() }}</span>
+      </div>
+      }
 
-    @if (errorMensaje()) {
-    <div class="alerta alerta-error">
-      ✕ {{ errorMensaje() }}
-    </div>
-    }
+      @if (errorMensaje()) {
+      <div class="alerta-feedback alerta-feedback-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ errorMensaje() }}</span>
+      </div>
+      }
 
-    <div class="tabla-contenedor">
-      <table class="tabla">
-        <thead>
-          <tr>
-            <th class="th-ordenable" style="width: 10%;" (click)="toggleOrdenId()" title="Clic para ordenar por ID">
-              ID
-              <span class="icono-orden">{{ ordenAscendenteId() ? '▲' : '▼' }}</span>
-            </th>
-            <th style="width: 38%;">Producto</th>
-            <th style="width: 16%;">Precio Unitario</th>
-            <th class="centrado" style="width: 14%; text-align: center;">Stock Actual</th>
-            <th class="centrado" style="width: 10%; text-align: center;">Estado</th>
-            <th class="centrado" style="width: 12%; text-align: center;">Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          @if (cargando()) {
-          <tr>
-            <td colspan="6" class="mensaje-tabla">Cargando catálogo de productos...</td>
-          </tr>
-          } @else {
-          @for (prod of productos(); track prod.id_producto) {
-          <tr>
-            <td><strong>#{{ prod.id_producto }}</strong></td>
-            <td><strong>{{ prod.nombre_producto }}</strong></td>
-            <td>{{ prod.precio | currency:'USD' }}</td>
-            <td class="centrado">
-              @if (prod.stock < 10) {
-                <span class="badge-stock stock-critico" title="Stock crítico: Re-stock urgente">{{ prod.stock }} unid.</span>
-              } @else if (prod.stock < 50) {
-                <span class="badge-stock stock-alerta" title="Stock bajo: Re-stock recomendado">{{ prod.stock }} unid.</span>
-              } @else {
-                <span class="stock-normal">{{ prod.stock }} unid.</span>
-              }
-            </td>
-            <td class="centrado">
-              <span class="badge-estado" [class.activo]="prod.estado_producto" [class.inactivo]="!prod.estado_producto">
-                {{ prod.estado_producto ? 'Activo' : 'Inactivo' }}
-              </span>
-            </td>
-            <td class="centrado">
-              <button class="btn-editar-stock" (click)="abrirModalStock(prod)" title="Modificar únicamente el stock">
-                Editar Stock
-              </button>
-            </td>
-          </tr>
-          } @empty {
-          <tr>
-            <td colspan="6" class="mensaje-tabla">No se encontraron productos en el sistema.</td>
-          </tr>
-          }
-          }
-        </tbody>
-      </table>
+      <!-- TABLA DE CONTROL DE STOCK -->
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th class="th-ordenable" style="width: 10%;" (click)="toggleOrdenId()" title="Clic para ordenar por ID">
+                <span>ID</span>
+                <span class="icono-orden">{{ ordenAscendenteId() ? '▲' : '▼' }}</span>
+              </th>
+              <th style="width: 38%;">Nombre del Producto</th>
+              <th class="derecha" style="width: 16%;">Precio</th>
+              <th class="centrado" style="width: 14%;">Stock Actual</th>
+              <th class="centrado" style="width: 10%;">Estado</th>
+              <th class="centrado" style="width: 12%;">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (cargando()) {
+            <tr>
+              <td colspan="6" class="mensaje-tabla">
+                <div class="fila-cargando">
+                  <span class="spinner-svg">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="2" x2="12" y2="6"></line>
+                      <line x1="12" y1="18" x2="12" y2="22"></line>
+                      <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                      <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                      <line x1="2" y1="12" x2="6" y2="12"></line>
+                      <line x1="18" y1="12" x2="22" y2="12"></line>
+                      <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                      <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                    </svg>
+                  </span>
+                  <span>Cargando existencias desde el almacén...</span>
+                </div>
+              </td>
+            </tr>
+            } @else {
+            @for (prod of productos(); track prod.id_producto) {
+            <tr>
+              <td class="col-id">#{{ prod.id_producto }}</td>
+              <td class="col-nombre-producto">
+                <strong>{{ prod.nombre_producto }}</strong>
+              </td>
+              <td class="derecha precio-unit">
+                ${{ prod.precio | number:'1.0-0' }}
+              </td>
+              <td class="centrado">
+                @if (prod.stock < 10) { <span class="chip-stock stock-critico" title="Stock crítico: Re-stock urgente">
+                  {{ prod.stock }} unid.</span>
+                  } @else if (prod.stock < 50) { <span class="chip-stock stock-alerta"
+                    title="Stock bajo: Re-stock recomendado">{{ prod.stock }} unid.</span>
+                    } @else {
+                    <span class="chip-stock stock-ok">{{ prod.stock }} unid.</span>
+                    }
+              </td>
+              <td class="centrado">
+                <span class="badge" [class.activo]="prod.estado_producto" [class.inactivo]="!prod.estado_producto">
+                  {{ prod.estado_producto ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="centrado">
+                <button type="button" class="btn-fila-b2b btn-stock-accion" (click)="abrirModalStock(prod)"
+                  title="Modificar únicamente el stock">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                  <span>Ajustar</span>
+                </button>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="6" class="mensaje-tabla">No se encontraron artículos en el sistema.</td>
+            </tr>
+            }
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
 
   <!-- MODAL EDITAR STOCK -->
   @if (mostrarModalStock() && productoSeleccionado()) {
   <div class="modal-overlay" (click)="cerrarModalStock()">
-    <div class="modal-tarjeta" (click)="$event.stopPropagation()">
-      <div class="modal-cabecera">
-        <div class="modal-titulo-bloque">
-          <h3 class="modal-titulo">Actualizar Stock</h3>
-          <span class="modal-subtitulo">#{{ productoSeleccionado()?.id_producto }} - {{ productoSeleccionado()?.nombre_producto }}</span>
+    <div class="modal-tarjeta-stock" (click)="$event.stopPropagation()">
+      <div class="modal-cabecera-stock">
+        <div class="modal-titulos-bloque">
+          <h3 class="modal-titulo-stock">Ajustar Unidades en Almacén</h3>
+          <span class="modal-subtitulo-stock">#{{ productoSeleccionado()?.id_producto }} — {{
+            productoSeleccionado()?.nombre_producto }}</span>
         </div>
-        <button type="button" class="btn-cerrar" (click)="cerrarModalStock()">✕</button>
+        <button type="button" class="btn-cerrar-modal" (click)="cerrarModalStock()" title="Cerrar">✕</button>
       </div>
 
-      <div class="modal-cuerpo">
-        <div class="tarjeta-resumen-stock">
-          <div class="info-stock-item">
-            <span class="info-stock-etiqueta">Stock Actual Registrado:</span>
-            <span class="info-stock-valor">{{ productoSeleccionado()?.stock }} unid.</span>
+      <div class="modal-cuerpo-stock">
+        <!-- Tarjeta de Datos Actuales -->
+        <div class="tarjeta-datos-actuales-stock">
+          <div class="dato-actual-item">
+            <span class="dato-label">Existencia Registrada:</span>
+            <span class="dato-valor tabular-nums">{{ productoSeleccionado()?.stock }} unidades</span>
           </div>
-          <div class="info-stock-item">
-            <span class="info-stock-etiqueta">Precio Unitario:</span>
-            <span class="info-stock-valor">{{ productoSeleccionado()?.precio | currency:'USD' }}</span>
+          <div class="dato-actual-item">
+            <span class="dato-label">Precio Unitario:</span>
+            <span class="dato-valor tabular-nums">${{ productoSeleccionado()?.precio | number:'1.0-0' }}</span>
           </div>
         </div>
 
         <div class="campo-stock">
-          <label for="inputNuevoStock" class="label-stock">Nuevo Stock en Almacén</label>
-          <div class="control-input-stock">
-            <input
-              type="number"
-              id="inputNuevoStock"
-              min="0"
-              step="1"
-              [(ngModel)]="nuevoStock"
-              placeholder="Ingresa la cantidad..."
-              (keydown)="bloquearSignoMenos($event)"
-              (keyup.enter)="guardarStock()"
-            />
-          </div>
-          <small class="pista-stock">Solo se modificará el conteo de unidades físicas disponibles.</small>
+          <label for="inputNuevoStock" class="label-modal">Nuevo Conteo Físico en Bodega <span
+              class="req">*</span></label>
+          <input type="number" id="inputNuevoStock" min="0" step="1" [(ngModel)]="nuevoStock" placeholder="0"
+            (keydown)="bloquearSignoMenos($event)" (keyup.enter)="guardarStock()"
+            class="input-modal input-stock-grande tabular-nums" />
+          <small class="pista-modal">Solo se actualizará la cantidad física disponible sin alterar el precio.</small>
         </div>
 
         @if (errorModalStock()) {
-        <div class="alerta alerta-error-modal">
-          {{ errorModalStock() }}
+        <div class="alerta-feedback alerta-feedback-error">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span>{{ errorModalStock() }}</span>
         </div>
         }
       </div>
 
-      <div class="modal-acciones">
-        <button type="button" class="btn-modal btn-modal-cancelar" (click)="cerrarModalStock()" [disabled]="guardando()">
+      <div class="modal-acciones-stock">
+        <button type="button" class="btn-b2b btn-b2b-secondary" (click)="cerrarModalStock()" [disabled]="guardando()">
           Cancelar
         </button>
-        <button type="button" class="btn-modal btn-modal-guardar" (click)="guardarStock()" [disabled]="guardando()">
-          {{ guardando() ? 'Guardando...' : 'Guardar Stock' }}
+        <button type="button" class="btn-b2b btn-b2b-primary" (click)="guardarStock()" [disabled]="guardando()">
+          {{ guardando() ? 'Guardando...' : 'Confirmar Stock' }}
         </button>
       </div>
     </div>
   </div>
   }
+
+  <!-- FOOTER CORPORATIVO -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand-col">
+          <div class="footer-logo-line">
+            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="40" height="40" rx="8" fill="#1E293B" />
+              <path d="M20 7L31 13.5V26.5L20 33L9 26.5V13.5L20 7Z" stroke="#94A3B8" stroke-width="1.5"
+                stroke-linejoin="round" />
+              <path d="M20 7V20M20 20L31 13.5M20 20L9 13.5" stroke="#94A3B8" stroke-width="1.5"
+                stroke-linejoin="round" />
+              <path d="M20 14L25 17L20 20L15 17L20 14Z" fill="#059669" />
+            </svg>
+            <span class="footer-brand-title">Distribuidora La Dorada S.A.S.</span>
+          </div>
+          <p class="footer-legal-desc">
+            Comercialización B2B de artículos de aseo, higiene y limpieza institucional.
+          </p>
+          <div class="footer-location">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>La Dorada, Caldas · Colombia</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">ACCESOS DIRECTOS</h4>
+          <ul class="footer-links-list">
+            <li><span>Catálogo de Productos (/producto)</span></li>
+            <li><span>Toma de Pedidos (/vendedor)</span></li>
+            <li><span>Despacho de Bodega (/inventario)</span></li>
+            <li><span>Historial de Pedidos (/pedidos)</span></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">INFRAESTRUCTURA & ESTADO</h4>
+          <div class="footer-status-box">
+            <div class="footer-status-pill">
+              <span class="status-indicator-dot"></span>
+              <span>Sistema Operativo · Conectado a PostgreSQL</span>
+            </div>
+            <p class="footer-support-text">Soporte Operativo Interno — Distribuidora</p>
+            <span class="footer-version">v1.0.0 — 2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <p>Copyright © 2026 Distribuidora La Dorada S.A.S. Todos los derechos reservados · Sistema de Información
+          Empresarial.</p>
+      </div>
+    </div>
+  </footer>
 
   <!-- MODAL DE CIERRE DE SESIÓN -->
   @if (mostrarModalLogout()) {
   <div class="modal-overlay" (click)="cerrarModalLogout()">
     <div class="modal-caja-logout" (click)="$event.stopPropagation()">
-      <h3 class="modal-titulo-logout">Cerrar Sesión</h3>
-      <p class="modal-texto-logout">¿Estás seguro de que deseas salir del sistema?</p>
+      <div class="modal-cabecera-b2b">
+        <div class="icono-advertencia-logout">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </div>
+        <div>
+          <h3 class="modal-titulo-logout">Cerrar Sesión</h3>
+          <p class="modal-descripcion-logout">
+            ¿Estás seguro de que deseas salir del sistema de control de existencias?
+          </p>
+        </div>
+      </div>
+
       <div class="modal-acciones-logout">
-        <button class="btn-modal btn-modal-cancelar" (click)="cerrarModalLogout()">Cancelar</button>
-        <button class="btn-modal btn-modal-confirmar" (click)="confirmarCerrarSesion()">Cerrar Sesión</button>
+        <button type="button" class="btn-b2b btn-b2b-secondary" (click)="cerrarModalLogout()">Cancelar</button>
+        <button type="button" class="btn-b2b btn-b2b-danger" (click)="confirmarCerrarSesion()">Cerrar Sesión</button>
       </div>
     </div>
   </div>
   }
 </div>
-
